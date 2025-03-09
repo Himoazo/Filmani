@@ -19,18 +19,24 @@ export interface Film extends Media {
   video: boolean; 
 }
   
-
-export interface FilmResponse {
-  page: number;
-  results: Film[]; 
+export interface MediaResponse{
+  page: number; 
   total_pages: number;
   total_results: number;
-  }
+}
+
+export interface FilmResponse extends MediaResponse {
+  results: Film[]; 
+}
 
   
-export interface TVShow extends Media {
+export interface Series extends Media {
   name: string;
   original_name: string;
   first_air_date: string;
   origin_country: string[];
+}
+
+export interface SeriesResponse extends MediaResponse {
+  results: Series[]; 
 }

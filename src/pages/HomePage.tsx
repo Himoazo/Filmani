@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react"
-import { Film } from "../Interfaces/FilmInterface"
-import { getPopMovies } from "../Services/MovieService";
+import { Film, Series } from "../Interfaces/FilmInterface"
+import { getPopMovies, getPopSeries } from "../Services/MovieService";
 import CardComponent from "../Components/CardComponent";
 
 const HomePage = () => {
   const [films, setFilms] = useState<Film[]>([]);
+  const [series, setSeries] = useState<Series[]>([]);
 
   
   
   useEffect(() => {
-    const fetchMovies = async () => {
+    const fetchMedia = async () => {
       const movies = await getPopMovies();
+      const series = await getPopSeries();
       setFilms(movies);
+      setSeries(series);
     }
-    fetchMovies();
+    fetchMedia();
   }, []);
   return (
     <>
@@ -21,6 +24,10 @@ const HomePage = () => {
         {films.map((film: Film) => (
           <CardComponent key={film.id} film={film} />
         ))}
+      
+      {series.map((series: Series) => (
+          <CardComponent key={series.id} series={series} />
+      ))}
     </>
     
   )
