@@ -1,13 +1,18 @@
 import axios from "axios";
+import { FilmResponse } from "../Interfaces/FilmInterface";
 
 const url: string = "https://api.themoviedb.org/3";
-const key: string = import.meta.env.API_KEY;
+const key: string = import.meta.env.VITE_API_KEY;
 
 // Popular movies
 export const getPopMovies = async () => {
     try {
-        const data = await axios.get(`${url}/movie/popular?language=en-US&page=1&api_key=${key}`);
+        const { data } = await axios.get<FilmResponse>(`${url}/trending/movie/week?language=en-US&page=1&api_key=${key}`);
+        
+        return data.results;
     } catch (error) {
         console.log(error);
+        return [];
     }
 }
+

@@ -1,8 +1,12 @@
+import { Film } from "../Interfaces/FilmInterface"
 
 
-const Card = () => {
+const Card = ({film} : {film: Film}) => {
   return (
-    <div>Card</div>
+    <div>
+      <h2>Card</h2>
+      {film.title}
+    </div>
   )
 }
 
