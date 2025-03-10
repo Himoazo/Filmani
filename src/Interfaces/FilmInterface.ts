@@ -3,7 +3,7 @@ export interface Media {
   backdrop_path: string;
   overview: string;
   poster_path: string;
-  media_type?: string;  // Some APIs provide this
+  media_type: string;
   adult: boolean;
   original_language: string;
   genre_ids: number[];

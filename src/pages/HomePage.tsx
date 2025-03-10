@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Film, Media, Series } from "../Interfaces/FilmInterface"
 import { getPopMovies, getPopSeries, searchMedia } from "../Services/MovieService";
 import CardComponent from "../Components/CardComponent";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [films, setFilms] = useState<Film[]>([]);
@@ -46,12 +47,16 @@ const HomePage = () => {
         <input type="text" name="search" value={keyWord} onChange={(e)=> setKeyWord(e.target.value)}/>
       </form>
       <div>HomePage</div>
-        {films.map((film: Film) => (
-          <CardComponent key={film.id} film={film} />
+      {films.map((film: Film) => (
+          <Link to={`/media/${film.id}`}>
+            <CardComponent key={film.id} film={film} />
+          </Link>
         ))}
       
       {series.map((series: Series) => (
+        <Link to={`/media/${series.id}`}>
           <CardComponent key={series.id} series={series} />
+        </Link>
       ))}
     </>
     

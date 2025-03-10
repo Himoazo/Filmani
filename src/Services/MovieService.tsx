@@ -36,3 +36,12 @@ export const searchMedia = async (keyword: string) => {
         
     }
 }
+
+export const mediaDetail = async (id: string) => {
+    try {
+        const { data } = await axios.get(`${url}/movie/${id}?append_to_response=credits,images,videos,reviews,similar&include_image_language=en&api_key=${key}`)
+        return data.results;
+    } catch (error) {
+        
+    }
+}
