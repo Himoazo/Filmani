@@ -26,3 +26,13 @@ export const getPopSeries = async () => {
         return [];
     }
 }
+
+// Serach media
+export const searchMedia = async (keyword: string) => {
+    try {
+        const { data } = await axios.get(`${url}/search/multi?query=${keyword}&api_key=${key}`)
+        return data.results;
+    } catch (error) {
+        
+    }
+}
