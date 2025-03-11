@@ -1,29 +1,29 @@
 import { useEffect, useState } from "react"
-import { Film, Media, Series } from "../Interfaces/FilmInterface"
-import { getPopMovies, getPopSeries, searchMedia } from "../Services/MovieService";
+import { Film, Media } from "../Interfaces/FilmInterface"
+import { getPopMovies, searchMedia } from "../Services/MovieService";
 import CardComponent from "../Components/CardComponent";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [films, setFilms] = useState<Film[]>([]);
-  const [series, setSeries] = useState<Series[]>([]);
+  /* const [series, setSeries] = useState<Series[]>([]); */
   const [keyWord, setKeyWord] = useState<string>("")
 
   const fetchMedia = async () => {
     if (keyWord != "") {
       const results : Media[] = await searchMedia(keyWord);
 
-      const tv = results.filter((result) => result.media_type === "tv") as Series[];
+     /*  const tv = results.filter((result) => result.media_type === "tv") as Series[]; */
       const movies = results.filter((result) => result.media_type === "movie") as Film[];
       
 
       setFilms(movies);
-      setSeries(tv);
+      /* setSeries(tv); */
     } else {
       const movies = await getPopMovies();
-      const series = await getPopSeries();
+      /* const series = await getPopSeries(); */
       setFilms(movies);
-      setSeries(series);
+      /* setSeries(series); */
     }
   }
   
@@ -48,16 +48,16 @@ const HomePage = () => {
       </form>
       <div>HomePage</div>
       {films.map((film: Film) => (
-          <Link to={`/media/${film.id}`}>
+          <Link to={`/media/${film.id}`} key={film.id}>
             <CardComponent key={film.id} film={film} />
           </Link>
         ))}
       
-      {series.map((series: Series) => (
-        <Link to={`/media/${series.id}`}>
+      {/* {series.map((series: Series) => (
+        <Link to={`/media/${series.id}`} key={series.id}>
           <CardComponent key={series.id} series={series} />
         </Link>
-      ))}
+      ))} */}
     </>
     
   )

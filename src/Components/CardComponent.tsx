@@ -8,6 +8,8 @@ const Card = ({film, series} : {film?: Film, series?: Series}) => {
         <div>
           <h2>Film Card</h2>
           {film.title}
+          <br />
+          ID: {film.id}
         </div>
       )}
 
@@ -15,6 +17,8 @@ const Card = ({film, series} : {film?: Film, series?: Series}) => {
         <div>
           <h2>Series Card</h2>
           {series.name}
+          <br />
+          ID: {series.id}
         </div>
       )}
     </div>

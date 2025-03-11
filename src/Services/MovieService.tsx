@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FilmResponse, SeriesResponse } from "../Interfaces/FilmInterface";
+import { FilmDetails, FilmResponse } from "../Interfaces/FilmInterface";
 
 const url: string = "https://api.themoviedb.org/3";
 const key: string = import.meta.env.VITE_API_KEY;
@@ -16,7 +16,7 @@ export const getPopMovies = async () => {
     }
 }
 
-export const getPopSeries = async () => {
+/* export const getPopSeries = async () => {
     try {
         const { data } = await axios.get<SeriesResponse>(`${url}/trending/tv/week?language=en-US&page=1&api_key=${key}`);
         
@@ -25,22 +25,23 @@ export const getPopSeries = async () => {
         console.log(error);
         return [];
     }
-}
+} */
 
 // Serach media
 export const searchMedia = async (keyword: string) => {
     try {
-        const { data } = await axios.get(`${url}/search/multi?query=${keyword}&api_key=${key}`)
+        const { data } = await axios.get(`${url}/search/movie?query=${keyword}&api_key=${key}`)
         return data.results;
     } catch (error) {
         
     }
 }
 
-export const mediaDetail = async (id: string) => {
+export const mediaDetail = async (id: number) => {
+    /* console.log(`${url}/movie/${id}?append_to_response=credits,images,videos,reviews,similar&include_image_language=en&api_key=${key}`) */
     try {
-        const { data } = await axios.get(`${url}/movie/${id}?append_to_response=credits,images,videos,reviews,similar&include_image_language=en&api_key=${key}`)
-        return data.results;
+        const { data } = await axios.get<FilmDetails>(`${url}/movie/${id}?api_key=${key}`);
+        return data;
     } catch (error) {
         
     }
