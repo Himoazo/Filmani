@@ -20,9 +20,6 @@ const ReviewFormComponent = ({filmIdProp}: ReviewFormProps) => {
         
         const reviewValidation: ReviewFormErrorInterface = {};
 
-        // testdata
-        
-        //end testdata
         if (!review.filmId) {
             reviewValidation.filmId = "Film id saknas";
         }
