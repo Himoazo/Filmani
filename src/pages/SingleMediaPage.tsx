@@ -39,7 +39,7 @@ const SingleMediaPage = () => {
       {filmSepcs.spoken_languages.map(lang => lang.english_name)} <br />
     </>
       )}
-      {filmSepcs && <ReviewFormComponent filmIdProp={filmSepcs.id} />}
+      {filmSepcs && <ReviewFormComponent MovieIdIdProp={filmSepcs.id} />}
     </div>
   )
 }

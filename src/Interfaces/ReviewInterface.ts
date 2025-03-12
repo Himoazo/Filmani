@@ -1,6 +1,6 @@
 export interface ReviewInterface {
-    filmId: number;
-    userId: number;
+    MovieId: number;
+  /*   userId: number; */
     rating: number;
     reviewText: string;
 }

@@ -3,16 +3,16 @@ import { ReviewFormErrorInterface, ReviewInterface } from '../Interfaces/ReviewI
 import { Review } from '../Services/ReviewService';
 
 interface ReviewFormProps {
-    filmIdProp: number;
+    MovieIdIdProp: number;
   }
 
-const ReviewFormComponent = ({filmIdProp}: ReviewFormProps) => {
-    const [review, setReview] = useState<ReviewInterface>({filmId: 0, userId: 0, rating: 0, reviewText: ""});
+const ReviewFormComponent = ({MovieIdIdProp}: ReviewFormProps) => {
+    const [review, setReview] = useState<ReviewInterface>({MovieId: 0, /* userId: 0, */ rating: 0, reviewText: ""});
     const [formErrors, setFormErrors] = useState<ReviewFormErrorInterface>({})
 
     useEffect(() => {
-        setReview(prev => ({ ...prev, userId: 10 }));
-        setReview(prev => ({ ...prev, filmId: filmIdProp }));
+        /* setReview(prev => ({ ...prev, userId: 10 })); */
+        setReview(prev => ({ ...prev, MovieId: MovieIdIdProp }));
     }, [])
 
     const validateReview = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -20,14 +20,14 @@ const ReviewFormComponent = ({filmIdProp}: ReviewFormProps) => {
         
         const reviewValidation: ReviewFormErrorInterface = {};
 
-        if (!review.filmId) {
+        if (!review.MovieId) {
             reviewValidation.filmId = "Film id saknas";
         }
 
-        if (!review.userId) {
+        /* if (!review.userId) {
             reviewValidation.userId = "User id saknas";
             //return and navigate to login
-        }
+        } */
 
         if (!review.rating || review.rating < 1 || review.rating > 10) {
             reviewValidation.rating = "Betyget måste anges och vara mellan 1 och 10";
@@ -42,8 +42,8 @@ const ReviewFormComponent = ({filmIdProp}: ReviewFormProps) => {
     }
 
     const addReview = async () => {
-        console.log("addRev")
         await Review(review);
+        setReview({MovieId: 0, rating: 0, reviewText: ""});
     }
 
   return (
