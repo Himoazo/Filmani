@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Combobox, ComboboxInput, ComboboxOption } from "@headlessui/react";
-import { searchMedia } from "../Services/MovieService";
+import { no_img, searchMedia, tmdb_img } from "../Services/MovieService";
 import { Film } from "../Interfaces/FilmInterface";
 import { useNavigate } from "react-router-dom";
 import useDebounce from "@/hooks/useDebounce";
@@ -94,7 +94,7 @@ const SearchBar = () => {
                 >
                   {/* Img */}
                   <img
-                    src={film.poster_path ? `https://image.tmdb.org/t/p/w92/${film.poster_path}` : "vite.svg"}
+                    src={film.poster_path ? `${tmdb_img}w92/${film.poster_path}` : `${no_img}`}
                     alt={film.title}
                     className="w-16 h-24 object-cover rounded-md"
                   />
@@ -119,38 +119,5 @@ const SearchBar = () => {
     </Combobox>
   );
 }
-  /* return (
-    <Combobox value={selectedFilm} onChange={handleSelect}>
-      <div className="relative w-full max-w-md">
-        <ComboboxInput
-          onChange={(e) => setQuery(e.target.value)}
-          onFocus={focusing}
-          onBlur={notFocused}
-          displayValue={(film: Film) => film?.title || ""}
-          placeholder="Sök filmer..."
-          className="w-full p-2 border border-gray-300 rounded-md"
-        />
-
-        {filteredFilms.length === 0 && query.length >= 2 && focus && (
-          <span className="block mt-1 text-gray-500">Inga matchande filmer</span>
-        )}
-
-        {filteredFilms.length > 0 && query.length >= 2 && focus && (
-          <div className="absolute w-full bg-white border border-gray-300 shadow-lg rounded-md mt-1 max-h-60 overflow-y-auto">
-            {filteredFilms.map((film) => (
-              <ComboboxOption
-                key={film.id}
-                value={film}
-                className="p-2 hover:bg-gray-100 cursor-pointer"
-              >
-                {film.title}
-              </ComboboxOption>
-            ))}
-          </div>
-        )}
-      </div>
-    </Combobox>
-  );
-} */
 
 export default SearchBar;

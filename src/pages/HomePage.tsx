@@ -18,17 +18,33 @@ const HomePage = () => {
     fetchMedia();
   }, []);
 
-  return (
-    <>
-      <div>HomePage</div>
-      {films.map((film: Film) => (
-          <Link to={`/media/${film.id}`} key={film.id}>
-            <CardComponent key={film.id} film={film} />
-          </Link>
-        ))}
-    </>
-    
-  )
+    return (
+      <div className="container mx-auto px-4 py-8">
+        {/* <h1 className="text-3xl font-bold mb-8 text-gray-800">Populära filmer</h1> */}
+        
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          {films.map((film: Film) => (
+            <Link 
+              to={`/media/${film.id}`} 
+              key={film.id} 
+              className="block"
+            >
+              <div className="mb-6 mx-auto w-[95%] max-w-[400px]">
+                <CardComponent film={film} />
+              </div>
+            </Link>
+          ))}
+        </div>
+        
+        {/* No films */}
+        {films.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-12">
+            <p className="text-xl text-gray-500">Inga filmer tillgängliga</p>
+          </div>
+        )}
+      </div>
+    )
 }
 
 export default HomePage
