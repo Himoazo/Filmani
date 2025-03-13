@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
-import { Film, Media } from "../Interfaces/FilmInterface"
+import { Film } from "../Interfaces/FilmInterface"
 import { getPopMovies, searchMedia } from "../Services/MovieService";
 import CardComponent from "../Components/CardComponent";
 import { Link } from "react-router-dom";
+import SearchBar from "@/Components/SearchBarComponent";
 
 const HomePage = () => {
   const [films, setFilms] = useState<Film[]>([]);
@@ -11,13 +12,13 @@ const HomePage = () => {
 
   const fetchMedia = async () => {
     if (keyWord != "") {
-      const results : Media[] = await searchMedia(keyWord);
-
+      const results : Film[] = await searchMedia(keyWord);
+      
      /*  const tv = results.filter((result) => result.media_type === "tv") as Series[]; */
-      const movies = results.filter((result) => result.media_type === "movie") as Film[];
+      /* const movies = results.filter((result) => result.media_type === "movie") as Film[]; */
       
 
-      setFilms(movies);
+      setFilms(results);
       /* setSeries(tv); */
     } else {
       const movies = await getPopMovies();
@@ -42,6 +43,7 @@ const HomePage = () => {
 
   return (
     <>
+      <SearchBar/>
       <form onSubmit={search}>
         <label htmlFor="search">Sök filmer/Serier</label>
         <input type="text" name="search" value={keyWord} onChange={(e)=> setKeyWord(e.target.value)}/>

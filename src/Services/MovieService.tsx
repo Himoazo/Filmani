@@ -30,12 +30,17 @@ export const getPopMovies = async () => {
 
 // Serach media
 export const searchMedia = async (keyword: string) => {
+    console.log("CAALLLEEED")
     try {
         const { data } = await axios.get(`${url}/search/movie?query=${keyword}&api_key=${key}`)
+
         return data.results;
+        
     } catch (error) {
         
     }
+    /* const data = {results: []}
+    return data.results; */
 }
 
 export const mediaDetail = async (id: number) => {
