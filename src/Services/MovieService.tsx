@@ -48,7 +48,7 @@ export const searchMedia = async (keyword: string) => {
 export const mediaDetail = async (id: number) => {
     /* console.log(`${url}/movie/${id}?append_to_response=credits,images,videos,reviews,similar&include_image_language=en&api_key=${key}`) */
     try {
-        const { data } = await axios.get<FilmDetails>(`${url}/movie/${id}?api_key=${key}`);
+        const { data } = await axios.get<FilmDetails>(`${url}/movie/${id}?api_key=${key}&language=sv-SV`);
 
         addMovieToLocalAPI(id); //Adds movie to own API if it not exits
         return data;
