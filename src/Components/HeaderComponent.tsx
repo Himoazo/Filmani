@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom"
 import { useAuth } from "../Context/AuthContext"
 import { Link } from "react-router-dom";
+import SearchBar from "./SearchBarComponent";
 
 
 const HeaderComponent = () => {
@@ -8,6 +9,7 @@ const HeaderComponent = () => {
   return (
     <header>
       <Link to="/"><h1 className="text-2xl font-bold tracking-wide mb-2 sm:mb-0 sm:mr-4">LOGO</h1></Link>
+      <SearchBar/>
         <nav>
             <ul>
               <li> <NavLink to="/">Start</NavLink> </li>
