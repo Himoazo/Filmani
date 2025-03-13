@@ -3,20 +3,36 @@ import { Film } from "../Interfaces/FilmInterface"
 import { getPopMovies } from "../Services/MovieService";
 import CardComponent from "../Components/CardComponent";
 import { Link } from "react-router-dom";
-
+import { useInView } from "react-intersection-observer";
 
 const HomePage = () => {
   const [films, setFilms] = useState<Film[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const { ref, inView } = useInView({ threshold: 1, triggerOnce: false });
 
-  const fetchMedia = async () => {
-    const movies = await getPopMovies();
-    setFilms(movies);
+  const fetchMedia = async (pageNumber: number) => {
+    const newMovies = await getPopMovies(pageNumber);
+
+    setFilms((prev) => [...prev, ...newMovies].filter(
+      (film, index, self) => self.findIndex(f => f.id === film.id) === index
+    ));
+    if (newMovies.length === 0) setHasMore(false);
   }
   
   useEffect(() => {
     
-    fetchMedia();
+    fetchMedia(1);
   }, []);
+
+
+  useEffect(() => {
+    if (inView && hasMore) {
+      setPage((prev) => prev + 1);
+      fetchMedia(page + 1);
+    }
+  }, [inView, hasMore]);
+
 
     return (
       <div className="container mx-auto px-4 py-8">
@@ -36,7 +52,12 @@ const HomePage = () => {
             </Link>
           ))}
         </div>
-        
+        {/* Load more */}
+        {hasMore && (
+          <div ref={ref} className="text-center py-4">
+            <p className="text-gray-500">Laddar fler filmer...</p>
+          </div>
+        )}
         {/* No films */}
         {films.length === 0 && (
           <div className="flex flex-col items-center justify-center py-12">

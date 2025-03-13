@@ -7,9 +7,10 @@ const key: string = import.meta.env.VITE_API_KEY;
 export const tmdb_img: string = "https://image.tmdb.org/t/p/";
 export const no_img: string = "vite.svg";
 // Popular movies
-export const getPopMovies = async () => {
+export const getPopMovies = async (page: number) => {
+
     try {
-        const { data } = await axios.get<FilmResponse>(`${url}/trending/movie/week?language=en-US&page=1&api_key=${key}`);
+        const { data } = await axios.get<FilmResponse>(`${url}/trending/movie/week?language=en-US&page=${page}&api_key=${key}`);
         
         return data.results;
     } catch (error) {
