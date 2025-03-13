@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ReviewInterface } from "../Interfaces/ReviewInterface";
+import { ReviewInterface, ReviewResponseInterface } from "../Interfaces/ReviewInterface";
 
 const url: string = "http://localhost:5034/";
 
@@ -31,5 +31,17 @@ export const addMovieToLocalAPI = async (id: number) => {
         return data;
     } catch (error) {
         console.log(error);
+    }
+}
+
+
+export const getMovieReviews = async (MovieId: number) => {
+    try {
+        const { data } = await axios.get<ReviewResponseInterface[]>(`${url}api/Reviews/${MovieId}`);
+
+        return data;
+    } catch (error) {
+        console.log(error);
+        return [];
     }
 }

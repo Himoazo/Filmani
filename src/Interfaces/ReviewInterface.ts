@@ -12,3 +12,13 @@ export interface ReviewFormErrorInterface {
     reviewText?: string;
     Error?: string
 }
+
+export interface ReviewResponseInterface {
+  id: number;
+  MovieId: number;
+  rating: number;
+  reviewText: string;
+  appUserId: string;
+  appUserName: string
+}
+

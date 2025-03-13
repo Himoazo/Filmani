@@ -3,17 +3,27 @@ import { useParams } from "react-router-dom"
 import { FilmDetails } from "../Interfaces/FilmInterface";
 import { mediaDetail, no_img, tmdb_img } from "../Services/MovieService";
 import ReviewFormComponent from "../Components/ReviewFormComponent";
+import { ReviewResponseInterface } from "@/Interfaces/ReviewInterface";
+import { getMovieReviews } from "@/Services/ReviewService";
+import ShowReviewsComponent from "@/Components/ShowReviewsComponent";
+
 
 const SingleMediaPage = () => {
   const { id } = useParams();
   const [filmSpecs, setFilmSpecs] = useState<FilmDetails>();
-
+  const [reviews, setReviews] = useState<ReviewResponseInterface[]>([])
+  
   const getFilmDetals = async () => {
     if ( id) {
       const details = await mediaDetail(Number(id));
       setFilmSpecs(details);
     }
   } 
+
+  const getReviews = async () => {
+    const getReviews = await getMovieReviews(Number(id));
+      setReviews(getReviews);
+  }
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -31,6 +41,7 @@ const SingleMediaPage = () => {
 
   useEffect(() => {
     getFilmDetals();
+    getReviews();
   }, []);
 
   if (!filmSpecs) {
@@ -140,7 +151,22 @@ const SingleMediaPage = () => {
           {/* Reviews - spans all 3 columns */}
           <div className="md:col-span-3 bg-white bg-opacity-90 rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
-            <ReviewFormComponent MovieIdIdProp={filmSpecs.id} />
+            <ReviewFormComponent MovieIdIdProp={filmSpecs.id} getReviews={getReviews} />
+          </div>
+          <div>
+            {reviews.length > 0 && (
+              <div className="mt-8">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">User Reviews</h3>
+                <div className="space-y-4">
+                  {reviews.map((review) => (
+                    <div key={review.id}>
+                      <ShowReviewsComponent reviewsProp={review} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
           </div>
         </div>
       </div>
