@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ReviewInterface, ReviewResponseInterface } from "../Interfaces/ReviewInterface";
+import { EditReviewInterface, ReviewInterface, ReviewResponseInterface } from "../Interfaces/ReviewInterface";
 
 const url: string = "http://localhost:5034/";
 
@@ -23,17 +23,6 @@ export const Review = async (review: ReviewInterface) => {
     }
 }
 
-export const addMovieToLocalAPI = async (id: number) => {
-    try {
-        const data = await axios.post(`${url}api/Films`, {
-            "movieId": id
-        });
-        return data;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 
 export const getMovieReviews = async (MovieId: number) => {
     try {
@@ -53,6 +42,30 @@ export const deleteReview = async (Id: number) => {
             throw "Du måste vara inloggad för att recenssera";
         }
         const data = await axios.delete(`${url}api/Reviews/${Id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+export const editReview = async (review: ReviewInterface) => {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            throw "Du måste vara inloggad för att redigera";
+        }
+
+        const editedReview: EditReviewInterface = {
+            rating: review.rating,
+            reviewText: review.reviewText
+        }
+        const data = await axios.put(`${url}api/Reviews/${review.id}`, editedReview ,{
             headers: {
                 Authorization: `Bearer ${token}`
             }

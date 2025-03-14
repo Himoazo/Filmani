@@ -1,6 +1,6 @@
 import axios from "axios";
 import { FilmDetails, FilmResponse } from "../Interfaces/FilmInterface";
-import { addMovieToLocalAPI } from "./ReviewService";
+
 
 const url: string = "https://api.themoviedb.org/3";
 const key: string = import.meta.env.VITE_API_KEY;
@@ -54,5 +54,16 @@ export const mediaDetail = async (id: number) => {
         return data;
     } catch (error) {
         
+    }
+}
+
+export const addMovieToLocalAPI = async (id: number) => {
+    try {
+        const data = await axios.post(`${url}api/Films`, {
+            "movieId": id
+        });
+        return data;
+    } catch (error) {
+        console.log(error);
     }
 }

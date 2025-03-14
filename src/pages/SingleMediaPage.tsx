@@ -29,7 +29,6 @@ const SingleMediaPage = () => {
     const confirmation = window.confirm("Är du säker att du vill ta bort reccensionen?");
     if (!confirmation) return;
     await deleteReview(id)
-    getReviews();
   }
 
   const formatCurrency = (amount: number) => {
@@ -167,8 +166,9 @@ const SingleMediaPage = () => {
                 <div className="space-y-4">
                   {reviews.map((review) => (
                     <div key={review.id}>
-                      <ShowReviewsComponent reviewsProp={review} />
-                      <button onClick={()=> deleteReviews(review.id)}>Delete</button>
+                      <ShowReviewsComponent reviewsProp={review} delReview={deleteReviews} />
+                      <button onClick={() => deleteReviews(review.id)}>Delete</button>
+                      <ReviewFormComponent MovieIdIdProp={filmSpecs.id} getReviews={getReviews} reviewToEdit={review} />
                     </div>
                   ))}
                 </div>

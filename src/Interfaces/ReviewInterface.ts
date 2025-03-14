@@ -1,11 +1,12 @@
 export interface ReviewInterface {
-    MovieId: number;
-  /*   userId: number; */
-    rating: number;
-    reviewText: string;
+  id?: number;
+  MovieId: number;
+  rating: number;
+  reviewText: string;
 }
 
 export interface ReviewFormErrorInterface {
+    id?: string;
     filmId?: string;
     userId?: string;
     rating?: string;
@@ -22,3 +23,7 @@ export interface ReviewResponseInterface {
   appUserName: string
 }
 
+export interface EditReviewInterface {
+  rating: number;
+  reviewText: string;
+}

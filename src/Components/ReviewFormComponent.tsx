@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { ReviewFormErrorInterface, ReviewInterface } from '../Interfaces/ReviewInterface';
-import { Review } from '../Services/ReviewService';
+import { ReviewFormErrorInterface, ReviewInterface, ReviewResponseInterface } from '../Interfaces/ReviewInterface';
+import { editReview, Review } from '../Services/ReviewService';
 import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "./ui/dialog"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
@@ -8,15 +8,19 @@ import { Button } from './ui/button';
 import { Textarea } from '@headlessui/react';
 interface ReviewFormProps {
   MovieIdIdProp: number;
-  getReviews: ()=>void
+  getReviews: () => void;
+  reviewToEdit?: ReviewResponseInterface;
   }
 
-const ReviewFormComponent = ({MovieIdIdProp, getReviews}: ReviewFormProps) => {
+const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFormProps) => {
     const [review, setReview] = useState<ReviewInterface>({MovieId: 0, rating: 0, reviewText: ""});
     const [formErrors, setFormErrors] = useState<ReviewFormErrorInterface>({})
 
     useEffect(() => {
-        setReview(prev => ({ ...prev, MovieId: MovieIdIdProp }));
+      setReview(prev => ({ ...prev, MovieId: MovieIdIdProp }));
+      if (reviewToEdit) {
+        setReview(prev => ({ ...prev, id: reviewToEdit.id, rating: reviewToEdit.rating, reviewText: reviewToEdit.reviewText }))
+      }
     }, [])
 
     const validateReview = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -32,8 +36,16 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews}: ReviewFormProps) => {
             reviewValidation.rating = "Betyget måste anges och vara mellan 1 och 10";
         }
 
+      if (reviewToEdit && review.id == null) {
+        reviewValidation.id = "ID för omdöme som ska redigeras måste anges";
+        console.log("ID för omdöme som ska redigeras måste anges");
+        }
+      
         if (Object.keys(reviewValidation).length > 0) {
             setFormErrors(reviewValidation);
+        } else if (reviewToEdit) {
+          setFormErrors({});
+          edit();
         } else {
             setFormErrors({});
             addReview();
@@ -46,14 +58,20 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews}: ReviewFormProps) => {
       await getReviews();
     }
 
+  const edit = async () => {
+    await editReview(review);
+    setReview({ MovieId: 0, rating: 0, reviewText: "" });
+    await getReviews();
+    }
+  
   return (
     <Dialog>
   <DialogTrigger asChild>
-    <Button variant="outline">Recensera</Button>
+    <Button variant="outline"> {reviewToEdit ? "Redigera" : "Recensera"} </Button>
   </DialogTrigger>
   <DialogContent className="sm:max-w-[425px]">
     <DialogHeader>
-      <DialogTitle>Edit profile</DialogTitle>
+      <DialogTitle>{reviewToEdit ? "Redigera omdöme" : "Recensera"}</DialogTitle>
       <DialogDescription>
         Skriv ditt omdömme om denna film!
       </DialogDescription>
