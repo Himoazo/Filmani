@@ -4,7 +4,7 @@ import { FilmDetails } from "../Interfaces/FilmInterface";
 import { mediaDetail, no_img, tmdb_img } from "../Services/MovieService";
 import ReviewFormComponent from "../Components/ReviewFormComponent";
 import { ReviewResponseInterface } from "@/Interfaces/ReviewInterface";
-import { getMovieReviews } from "@/Services/ReviewService";
+import { deleteReview, getMovieReviews } from "@/Services/ReviewService";
 import ShowReviewsComponent from "@/Components/ShowReviewsComponent";
 
 
@@ -23,6 +23,13 @@ const SingleMediaPage = () => {
   const getReviews = async () => {
     const getReviews = await getMovieReviews(Number(id));
       setReviews(getReviews);
+  }
+
+  const deleteReviews = async (id: number) => {
+    const confirmation = window.confirm("Är du säker att du vill ta bort reccensionen?");
+    if (!confirmation) return;
+    await deleteReview(id)
+    getReviews();
   }
 
   const formatCurrency = (amount: number) => {
@@ -161,6 +168,7 @@ const SingleMediaPage = () => {
                   {reviews.map((review) => (
                     <div key={review.id}>
                       <ShowReviewsComponent reviewsProp={review} />
+                      <button onClick={()=> deleteReviews(review.id)}>Delete</button>
                     </div>
                   ))}
                 </div>

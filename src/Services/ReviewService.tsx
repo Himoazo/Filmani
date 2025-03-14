@@ -45,3 +45,21 @@ export const getMovieReviews = async (MovieId: number) => {
         return [];
     }
 }
+
+export const deleteReview = async (Id: number) => {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            throw "Du måste vara inloggad för att recenssera";
+        }
+        const data = await axios.delete(`${url}api/Reviews/${Id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}

@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { ReviewFormErrorInterface, ReviewInterface } from '../Interfaces/ReviewInterface';
 import { Review } from '../Services/ReviewService';
-
+import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "./ui/dialog"
+import { Input } from "./ui/input"
+import { Label } from "./ui/label"
+import { Button } from './ui/button';
+import { Textarea } from '@headlessui/react';
 interface ReviewFormProps {
   MovieIdIdProp: number;
   getReviews: ()=>void
   }
 
 const ReviewFormComponent = ({MovieIdIdProp, getReviews}: ReviewFormProps) => {
-    const [review, setReview] = useState<ReviewInterface>({MovieId: 0, /* userId: 0, */ rating: 0, reviewText: ""});
+    const [review, setReview] = useState<ReviewInterface>({MovieId: 0, rating: 0, reviewText: ""});
     const [formErrors, setFormErrors] = useState<ReviewFormErrorInterface>({})
 
     useEffect(() => {
-        /* setReview(prev => ({ ...prev, userId: 10 })); */
         setReview(prev => ({ ...prev, MovieId: MovieIdIdProp }));
     }, [])
 
@@ -24,11 +27,6 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews}: ReviewFormProps) => {
         if (!review.MovieId) {
             reviewValidation.filmId = "Film id saknas";
         }
-
-        /* if (!review.userId) {
-            reviewValidation.userId = "User id saknas";
-            //return and navigate to login
-        } */
 
         if (!review.rating || review.rating < 1 || review.rating > 10) {
             reviewValidation.rating = "Betyget måste anges och vara mellan 1 och 10";
@@ -48,55 +46,50 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews}: ReviewFormProps) => {
       await getReviews();
     }
 
-    return (
-        <form onSubmit={validateReview} className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg mx-auto space-y-4">
-          {/* Rating Input */}
-          <div>
-            <label htmlFor="rating" className="block text-sm font-medium text-gray-700">
-              Betyg
-            </label>
-            <input
-              type="number"
-              id="rating"
-              name="rating"
-              value={review.rating}
-              onChange={(event) => setReview(r => ({ ...r, rating: Number(event.target.value) }))}
-              className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-              min="1"
-              max="10"
-            />
-            {formErrors.rating && <span className="text-red-500 text-sm">{formErrors.rating}</span>}
-          </div>
-      
-          {/* Review Textarea */}
-          <div>
-            <label htmlFor="review" className="block text-sm font-medium text-gray-700">
-              Recenssion
-            </label>
-            <textarea
-              name="review"
-              id="review"
-              value={review.reviewText}
-              onChange={(event) => setReview(t => ({ ...t, reviewText: event.target.value }))}
-              className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 resize-none h-24"
-            />
-            {formErrors.reviewText && <span className="text-red-500 text-sm">{formErrors.reviewText}</span>}
-          </div>
-      
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition"
-          >
-            Submit
-          </button>
-      
-          {/* General Errors */}
-          {formErrors.userId && <span className="text-red-500 text-sm block">{formErrors.userId}</span>}
-          {formErrors.filmId && <span className="text-red-500 text-sm block">{formErrors.filmId}</span>}
-        </form>
+  return (
+    <Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Recensera</Button>
+  </DialogTrigger>
+  <DialogContent className="sm:max-w-[425px]">
+    <DialogHeader>
+      <DialogTitle>Edit profile</DialogTitle>
+      <DialogDescription>
+        Skriv ditt omdömme om denna film!
+      </DialogDescription>
+    </DialogHeader>
+    <form onSubmit={validateReview}>
+      <div className="grid gap-4 py-4">
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="rating" className="text-right">
+            Betyg
+          </Label>
+          <Input type="number" id="rating" name="rating" value={review.rating} 
+            className="col-span-3" min="1" max="10"
+            onChange={(event) => setReview(r => ({ ...r, rating: Number(event.target.value) }))}
+          />
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="review" className="text-right">
+            Recension
+          </Label>
+          <Textarea 
+            id="review" 
+            value={review.reviewText} 
+            className="col-span-3"
+            onChange={(event) => setReview(t => ({ ...t, reviewText: event.target.value }))}
+          />
+        </div>
+      </div>
+      <DialogFooter>
+        <Button type="submit">Save changes</Button>
+      </DialogFooter>
+    </form>
+  </DialogContent>
+</Dialog>   
       );
-      
 }
 
 export default ReviewFormComponent
+
+
