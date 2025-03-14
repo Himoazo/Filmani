@@ -11,6 +11,11 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
+    const decodeRole = (token: string) => {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        return decodedToken.role;
+    }
+
     const login =async (loginData: Login) => {
         
         try {
@@ -33,8 +38,10 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
 
             const data = await response.json() as User;
 
+            const role = decodeRole(data.token);
+            
             localStorage.setItem("token", data.token);
-            setUser({id: data.id, username: data.username, email: data.email, token: data.token});
+            setUser({id: data.id, username: data.username, email: data.email, token: data.token, role: role});
            
         } catch (error) {
             throw error;
@@ -46,8 +53,9 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
             const {data} = await axios.post<User>("http://localhost:5034/api/account/register", registerData);
 
             if (data) {
+                const role = decodeRole(data.token);
                 localStorage.setItem("token", data.token);
-                setUser({id: data.id, username: data.username, email: data.email, token: data.token});
+                setUser({id: data.id, username: data.username, email: data.email, token: data.token, role: role});
             } else {
                 throw new Error("Det gick inte att skapa kono, kontrollera registreringsuppgifterna och försök igen");
             }
@@ -81,7 +89,8 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
 
             if (response.ok) {
                 const data = await response.json() as User;
-                setUser({id: data.id, username: data.username, email: data.email, token: data.token});
+                const role = decodeRole(data.token);
+                setUser({id: data.id, username: data.username, email: data.email, token: data.token, role: role});
                 
             }
         } catch (error) {
