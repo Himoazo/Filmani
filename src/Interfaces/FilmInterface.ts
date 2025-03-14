@@ -29,6 +29,12 @@ export interface FilmResponse extends MediaResponse {
   results: Film[]; 
 }
 
+export interface LocalFilmData {
+  id: number;
+  movieId: number;
+  viewCount: number;
+  reviews?: [];
+}
   
 /* export interface Series extends Media {
   name: string;

@@ -34,7 +34,7 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
             const data = await response.json() as User;
 
             localStorage.setItem("token", data.token);
-            setUser({username: data.username, email: data.email, token: data.token});
+            setUser({id: data.id, username: data.username, email: data.email, token: data.token});
            
         } catch (error) {
             throw error;
@@ -47,7 +47,7 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
 
             if (data) {
                 localStorage.setItem("token", data.token);
-                setUser({username: data.username, email: data.email, token: data.token});
+                setUser({id: data.id, username: data.username, email: data.email, token: data.token});
             } else {
                 throw new Error("Det gick inte att skapa kono, kontrollera registreringsuppgifterna och försök igen");
             }
@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
 
             if (response.ok) {
                 const data = await response.json() as User;
-                setUser({username: data.username, email: data.email, token: data.token});
+                setUser({id: data.id, username: data.username, email: data.email, token: data.token});
                 
             }
         } catch (error) {

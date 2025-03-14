@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { FilmDetails } from "../Interfaces/FilmInterface";
-import { mediaDetail, no_img, tmdb_img } from "../Services/MovieService";
+import { addMovieToLocalAPI, mediaDetail, no_img, tmdb_img } from "../Services/MovieService";
 import ReviewFormComponent from "../Components/ReviewFormComponent";
 import { ReviewResponseInterface } from "@/Interfaces/ReviewInterface";
-import { deleteReview, getMovieReviews } from "@/Services/ReviewService";
+import {  getMovieReviews } from "@/Services/ReviewService";
 import ShowReviewsComponent from "@/Components/ShowReviewsComponent";
+import { useAuth } from "@/Context/AuthContext";
 
 
 const SingleMediaPage = () => {
   const { id } = useParams();
   const [filmSpecs, setFilmSpecs] = useState<FilmDetails>();
   const [reviews, setReviews] = useState<ReviewResponseInterface[]>([])
-  
+  const [viewCount, setViewCount] = useState<number | null>(null);
+
+   const {  user } = useAuth();
+
   const getFilmDetals = async () => {
     if ( id) {
       const details = await mediaDetail(Number(id));
@@ -23,6 +27,11 @@ const SingleMediaPage = () => {
   const getReviews = async () => {
     const getReviews = await getMovieReviews(Number(id));
       setReviews(getReviews);
+  }
+
+  const addNewMovieOrGetViewCount = async () => {
+    const CountViews = await addMovieToLocalAPI(Number(id));
+    setViewCount(CountViews);
   }
 
   const formatCurrency = (amount: number) => {
@@ -42,7 +51,9 @@ const SingleMediaPage = () => {
   useEffect(() => {
     getFilmDetals();
     getReviews();
+    addNewMovieOrGetViewCount();
   }, []);
+
 
   if (!filmSpecs) {
     return (
@@ -128,6 +139,9 @@ const SingleMediaPage = () => {
                 <div>
                   <span className="font-semibold">Revenue:</span> {formatCurrency(filmSpecs.revenue)}
                 </div>
+                <div>
+                  <span className="font-semibold">Visad på Filmani:</span> {viewCount ? viewCount : "Otillgängligt"}
+                </div>
               </div>
             </div>
             
@@ -161,7 +175,9 @@ const SingleMediaPage = () => {
                   {reviews.map((review) => (
                     <div key={review.id}>
                       <ShowReviewsComponent reviewsProp={review} />
-                      <ReviewFormComponent MovieIdIdProp={filmSpecs.id} getReviews={getReviews} reviewToEdit={review} />
+                      {review.appUserId == user?.id ? 
+                      <ReviewFormComponent MovieIdIdProp={filmSpecs.id} getReviews={getReviews} reviewToEdit={review} /> : "" 
+                      }
                     </div>
                   ))}
                 </div>

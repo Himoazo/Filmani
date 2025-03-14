@@ -1,8 +1,9 @@
 import axios from "axios";
-import { FilmDetails, FilmResponse } from "../Interfaces/FilmInterface";
+import { FilmDetails, FilmResponse, LocalFilmData } from "../Interfaces/FilmInterface";
 
 
 const url: string = "https://api.themoviedb.org/3";
+const localApi: string = "http://localhost:5034"
 const key: string = import.meta.env.VITE_API_KEY;
 export const tmdb_img: string = "https://image.tmdb.org/t/p/";
 export const no_img: string = "vite.svg";
@@ -19,17 +20,6 @@ export const getPopMovies = async (page: number) => {
     }
 }
 
-/* export const getPopSeries = async () => {
-    try {
-        const { data } = await axios.get<SeriesResponse>(`${url}/trending/tv/week?language=en-US&page=1&api_key=${key}`);
-        
-        return data.results;
-    } catch (error) {
-        console.log(error);
-        return [];
-    }
-} */
-
 // Serach media
 export const searchMedia = async (keyword: string) => {
     console.log("CAALLLEEED")
@@ -41,8 +31,6 @@ export const searchMedia = async (keyword: string) => {
     } catch (error) {
         
     }
-    /* const data = {results: []}
-    return data.results; */
 }
 
 export const mediaDetail = async (id: number) => {
@@ -50,20 +38,23 @@ export const mediaDetail = async (id: number) => {
     try {
         const { data } = await axios.get<FilmDetails>(`${url}/movie/${id}?api_key=${key}&language=sv-SV`);
 
-        addMovieToLocalAPI(id); //Adds movie to own API if it not exits
+    
         return data;
     } catch (error) {
         
     }
 }
 
+//Adds movie to own API if it not exits
 export const addMovieToLocalAPI = async (id: number) => {
     try {
-        const data = await axios.post(`${url}api/Films`, {
-            "movieId": id
+        const data = await axios.post<LocalFilmData>(`${localApi}/api/Films`, {
+            movieId: id
         });
-        return data;
+        return data.data.viewCount;
+        
     } catch (error) {
         console.log(error);
+        return null;
     }
 }
