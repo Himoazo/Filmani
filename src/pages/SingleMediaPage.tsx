@@ -25,12 +25,6 @@ const SingleMediaPage = () => {
       setReviews(getReviews);
   }
 
-  const deleteReviews = async (id: number) => {
-    const confirmation = window.confirm("Är du säker att du vill ta bort reccensionen?");
-    if (!confirmation) return;
-    await deleteReview(id)
-  }
-
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -166,8 +160,7 @@ const SingleMediaPage = () => {
                 <div className="space-y-4">
                   {reviews.map((review) => (
                     <div key={review.id}>
-                      <ShowReviewsComponent reviewsProp={review} delReview={deleteReviews} />
-                      <button onClick={() => deleteReviews(review.id)}>Delete</button>
+                      <ShowReviewsComponent reviewsProp={review} />
                       <ReviewFormComponent MovieIdIdProp={filmSpecs.id} getReviews={getReviews} reviewToEdit={review} />
                     </div>
                   ))}

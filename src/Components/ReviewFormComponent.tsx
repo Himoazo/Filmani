@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ReviewFormErrorInterface, ReviewInterface, ReviewResponseInterface } from '../Interfaces/ReviewInterface';
-import { editReview, Review } from '../Services/ReviewService';
+import { deleteReview, editReview, Review } from '../Services/ReviewService';
 import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "./ui/dialog"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
@@ -62,7 +62,15 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
     await editReview(review);
     setReview({ MovieId: 0, rating: 0, reviewText: "" });
     await getReviews();
-    }
+  }
+  
+  const deleteReviews = async (id: number) => {
+    const confirmation = window.confirm("Är du säker att du vill ta bort reccensionen?");
+    if (!confirmation) return;
+    await deleteReview(id);
+    await getReviews();
+  }
+  
   
   return (
     <Dialog>
@@ -100,7 +108,8 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
         </div>
       </div>
       <DialogFooter>
-        <Button type="submit">Save changes</Button>
+            <Button type="submit">Save changes</Button>
+            {reviewToEdit && <Button onClick={()=> deleteReviews(reviewToEdit.id)}>Delete</Button>}
       </DialogFooter>
     </form>
   </DialogContent>

@@ -1,5 +1,7 @@
 import { createContext, useState, useContext, ReactNode, useEffect} from "react";
 import { User, Login, AuthContext } from "../Interfaces/Auth";
+import axios from "axios";
+import { Register } from "react-router-dom";
 
 const AuthenticateContext = createContext<AuthContext | null>(null);
 
@@ -34,6 +36,21 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
             localStorage.setItem("token", data.token);
             setUser({username: data.username, email: data.email, token: data.token});
            
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    const signUp = async (registerData: Register) => {
+        try {
+            const {data} = await axios.post<User>("http://localhost:5034/api/account/register", registerData);
+
+            if (data) {
+                localStorage.setItem("token", data.token);
+                setUser({username: data.username, email: data.email, token: data.token});
+            } else {
+                throw new Error("Det gick inte att skapa kono, kontrollera registreringsuppgifterna och försök igen");
+            }
         } catch (error) {
             throw error;
         }
@@ -81,7 +98,7 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
 
 
     return (
-        <AuthenticateContext.Provider value={{login, logout, user, loading}}>
+        <AuthenticateContext.Provider value={{login, logout, signUp, user, loading}}>
             {children}
         </AuthenticateContext.Provider>
     )

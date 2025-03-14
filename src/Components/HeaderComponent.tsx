@@ -45,6 +45,16 @@ const HeaderComponent = () => {
                   Recensioner
                 </NavLink>
               </li>
+                {!user && 
+                  <li>
+                <NavLink to="/register" className={({ isActive }) => 
+                  isActive ? "text-blue-300" : "text-white hover:text-blue-300 transition-colors"
+                }>
+                  Registrera
+                  </NavLink>
+                  </li>
+                }
+              
               <li>
                 {!user ? (
                   <NavLink to="/login" className={({ isActive }) => 
@@ -58,9 +68,15 @@ const HeaderComponent = () => {
                   </button>
                 )}
               </li>
+              <li>
+                {user && (
+                    <h1 className="text-sm font-medium bg-slate-700 px-3 py-1 rounded-full">
+                      Inloggad: <span className="font-bold">{user.username}</span>
+                    </h1>
+                  )}
+              </li>
             </ul>
           </nav>
-          
           {/* Hmburger */}
           <button 
             className="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white"
@@ -99,6 +115,15 @@ const HeaderComponent = () => {
                   Recensioner
                 </NavLink>
               </li>
+              {!user && 
+                  <li>
+                <NavLink to="/register" className={({ isActive }) => 
+                  isActive ? "text-blue-300" : "text-white hover:text-blue-300 transition-colors"
+                }>
+                  Registrera
+                  </NavLink>
+                  </li>
+                }
               <li>
                 {!user ? (
                   <NavLink to="/login" 
@@ -121,9 +146,17 @@ const HeaderComponent = () => {
                   </button>
                 )}
               </li>
+              <li>
+              {user && (
+                <h1 className="text-sm font-medium bg-slate-700 px-3 py-1 rounded-full">
+                  Inloggad: <span className="font-bold">{user.username}</span>
+                </h1>
+              )}
+              </li>
             </ul>
           </nav>
         )}
+        
       </div>
     </header>
   );

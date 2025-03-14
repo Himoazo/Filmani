@@ -4,6 +4,7 @@ import ReviewsPage from "../pages/ReviewsPage";
 import LoginPage from "../pages/LoginPage";
 import Layout from "../Components/Layout";
 import SingleMediaPage from "../pages/SingleMediaPage";
+import RegisterPage from "@/pages/RegisterPage";
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
             {
                 path: "/login",
                 element: <LoginPage />
+            },
+            {
+                path: "/register",
+                element: <RegisterPage />
             }
         ]
     }
