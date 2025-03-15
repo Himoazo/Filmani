@@ -76,3 +76,23 @@ export const editReview = async (review: ReviewInterface) => {
         console.log(error);
     }
 }
+
+
+export const toggleLike = async (id: number) => {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            throw "Du måste vara inloggad för att redigera";
+        }
+
+        const { data } = await axios.post(`${url}api/Reviews/toggle-like/${id}`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return data;
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}

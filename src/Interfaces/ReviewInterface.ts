@@ -21,7 +21,8 @@ export interface ReviewResponseInterface {
   reviewText: string;
   appUserId: string;
   appUserName: string;
-  CreatedAt: string;
+  likeCount: number;
+  createdAt: string;
 }
 
 export interface EditReviewInterface {

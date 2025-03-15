@@ -26,7 +26,7 @@ const SingleMediaPage = () => {
 
   const getReviews = async () => {
     const getReviews = await getMovieReviews(Number(id));
-      setReviews(getReviews);
+    setReviews(getReviews);
   }
 
   const addNewMovieOrGetViewCount = async () => {
@@ -184,7 +184,7 @@ const SingleMediaPage = () => {
                 <div className="space-y-4">
                   {reviews.map((review) => (
                     <div key={review.id}>
-                      <ShowReviewsComponent reviewsProp={review} />
+                      <ShowReviewsComponent reviewsProp={review} getReviews={getReviews} />
                       {review.appUserId == user?.id || user?.role == "Admin" ? 
                       <ReviewFormComponent MovieIdIdProp={filmSpecs.id} getReviews={getReviews} reviewToEdit={review} /> : "" 
                       }
