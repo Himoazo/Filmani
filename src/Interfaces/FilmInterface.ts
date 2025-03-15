@@ -30,10 +30,14 @@ export interface FilmResponse extends MediaResponse {
 }
 
 export interface LocalFilmData {
-  id: number;
+  id?: number;
   movieId: number;
-  viewCount: number;
+  viewCount?: number;
   reviews?: [];
+  poster_path: string;
+  title: string;
+  release_date: string;
+  overview: string;
 }
   
 /* export interface Series extends Media {

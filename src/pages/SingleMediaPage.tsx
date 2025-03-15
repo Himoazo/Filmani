@@ -30,8 +30,13 @@ const SingleMediaPage = () => {
   }
 
   const addNewMovieOrGetViewCount = async () => {
-    const CountViews = await addMovieToLocalAPI(Number(id));
-    setViewCount(CountViews);
+    if (filmSpecs) {
+      const CountViews = await addMovieToLocalAPI(Number(id), filmSpecs);
+      setViewCount(CountViews);
+    }
+    if (!filmSpecs) {
+      console.log("filmSpecs is null")
+    }
   }
 
   const formatCurrency = (amount: number) => {
@@ -51,8 +56,14 @@ const SingleMediaPage = () => {
   useEffect(() => {
     getFilmDetals();
     getReviews();
-    addNewMovieOrGetViewCount();
+
   }, []);
+
+  useEffect(() => {
+    if (filmSpecs) {
+      addNewMovieOrGetViewCount();
+    }
+  },[filmSpecs])
 
 
   if (!filmSpecs) {
@@ -175,7 +186,7 @@ const SingleMediaPage = () => {
                   {reviews.map((review) => (
                     <div key={review.id}>
                       <ShowReviewsComponent reviewsProp={review} />
-                      {review.appUserId == user?.id ? 
+                      {review.appUserId == user?.id || user?.role == "Admin" ? 
                       <ReviewFormComponent MovieIdIdProp={filmSpecs.id} getReviews={getReviews} reviewToEdit={review} /> : "" 
                       }
                     </div>

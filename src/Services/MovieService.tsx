@@ -46,15 +46,32 @@ export const mediaDetail = async (id: number) => {
 }
 
 //Adds movie to own API if it not exits
-export const addMovieToLocalAPI = async (id: number) => {
+export const addMovieToLocalAPI = async (id: number, filmSpecs: FilmDetails) => {
+    const newFilm: LocalFilmData = {
+        movieId: id,
+        poster_path: filmSpecs.poster_path,
+        title: filmSpecs.title,
+        release_date: filmSpecs.release_date,
+        overview: filmSpecs.overview
+    }
+    console.log(newFilm);
     try {
-        const data = await axios.post<LocalFilmData>(`${localApi}/api/Films`, {
-            movieId: id
-        });
-        return data.data.viewCount;
+        const data = await axios.post<LocalFilmData>(`${localApi}/api/Films`, newFilm);
+        const count : number = data.data.viewCount!
+        return count;
         
     } catch (error) {
         console.log(error);
         return null;
+    }
+}
+
+export const getToLocalFilms = async () => {
+    try {
+        const {data} = await axios.get<LocalFilmData[]>(`${localApi}/api/Films`);
+            return data;
+    } catch (error) {
+        console.log(error);
+        return [];
     }
 }
