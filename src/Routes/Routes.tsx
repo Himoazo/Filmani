@@ -5,6 +5,8 @@ import LoginPage from "../pages/LoginPage";
 import Layout from "../Components/Layout";
 import SingleMediaPage from "../pages/SingleMediaPage";
 import RegisterPage from "@/pages/RegisterPage";
+import ProtectedRoutes from "./ProtectedRoutes";
+import AdminPage from "@/pages/AdminPage";
 
 const router = createBrowserRouter([
     {
@@ -30,6 +32,14 @@ const router = createBrowserRouter([
             {
                 path: "/register",
                 element: <RegisterPage />
+            },
+            {
+                path: "/adminpage",
+                element: (
+                    <ProtectedRoutes> 
+                        <AdminPage/>
+                    </ProtectedRoutes >
+                )
             }
         ]
     }

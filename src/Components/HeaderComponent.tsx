@@ -45,6 +45,15 @@ const HeaderComponent = () => {
                   Recensioner
                 </NavLink>
               </li>
+              {user?.role == "Admin" && 
+              <li>
+              <NavLink to="/adminpage" className={({ isActive }) => 
+                isActive ? "text-blue-300" : "text-white hover:text-blue-300 transition-colors"
+              }>
+                Admin
+              </NavLink>
+            </li>
+              }
                 {!user && 
                   <li>
                 <NavLink to="/register" className={({ isActive }) => 
@@ -115,11 +124,21 @@ const HeaderComponent = () => {
                   Recensioner
                 </NavLink>
               </li>
+              {user?.role == "Admin" &&
+                <NavLink to="/adminpage" 
+                className={({ isActive }) => 
+                  isActive ? "block text-blue-300" : "block text-white hover:text-blue-300 transition-colors"
+                }
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Admin
+              </NavLink>
+              } 
               {!user && 
                   <li>
                 <NavLink to="/register" className={({ isActive }) => 
                   isActive ? "text-blue-300" : "text-white hover:text-blue-300 transition-colors"
-                }>
+                } onClick={() => setIsMenuOpen(false)}>
                   Registrera
                   </NavLink>
                   </li>

@@ -56,7 +56,6 @@ const SingleMediaPage = () => {
   useEffect(() => {
     getFilmDetals();
     getReviews();
-
   }, []);
 
   useEffect(() => {
