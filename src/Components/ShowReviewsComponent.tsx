@@ -15,7 +15,7 @@ const ShowReviewsComponent = ({reviewsProp}: ShowReviewsComponentProps) => {
           {reviewsProp.appUserName || "Anonymous User"}
         </div>
         <div className="text-xs text-gray-500">
-          Review #{reviewsProp.id}
+          Rating #{reviewsProp.rating}
         </div>
       </div>
       

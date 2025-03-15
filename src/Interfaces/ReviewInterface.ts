@@ -20,7 +20,8 @@ export interface ReviewResponseInterface {
   rating: number;
   reviewText: string;
   appUserId: string;
-  appUserName: string
+  appUserName: string;
+  CreatedAt: string;
 }
 
 export interface EditReviewInterface {

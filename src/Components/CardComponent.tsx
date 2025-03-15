@@ -1,8 +1,8 @@
 import { no_img, tmdb_img } from "@/Services/MovieService";
-import { Film} from "../Interfaces/FilmInterface"
+import { Film, LocalFilmData} from "../Interfaces/FilmInterface"
 
 
-const Card = ({ film }: { film?: Film }) => {
+const Card = ({ film }: { film?: Film | LocalFilmData }) => {
   if (!film) return null;
 
     return (
@@ -11,9 +11,9 @@ const Card = ({ film }: { film?: Film }) => {
         <div className="absolute inset-0 bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
         
         
-        <div className="absolute top-0 right-0 z-20 bg-gradient-to-l from-blue-600 to-transparent px-3 py-1 text-white font-bold">
+        {/* <div className="absolute top-0 right-0 z-20 bg-gradient-to-l from-blue-600 to-transparent px-3 py-1 text-white font-bold">
           {film.vote_average ? film.vote_average.toFixed(1) : "N/A"}
-        </div>
+        </div> */}
         
        
         <img 

@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react"
-import { Film, FilmDetails, LocalFilmData } from "../Interfaces/FilmInterface"
+import { LocalFilmData } from "../Interfaces/FilmInterface"
 import { Link } from "react-router-dom";
+import { getLocalFilms } from "@/Services/MovieService";
 import CardComponent from "@/Components/CardComponent";
-import { getToLocalFilms, mediaDetail } from "@/Services/MovieService";
-import { ReviewResponseInterface } from "@/Interfaces/ReviewInterface";
 
 const ReviewsPage = () => {
   const [films, setFilms] = useState<LocalFilmData[]>([]);
 
   const getFilms = async () => {
       
-        const movies = await getToLocalFilms();
+        const movies = await getLocalFilms();
         setFilms(movies);
-      
-    } 
+  } 
+  
+  useEffect(() => {
+    getFilms();
+  }, [])
   return (
     <div className="container mx-auto px-4 py-8">
     {/* <h1 className="text-3xl font-bold mb-8 text-gray-800">Populära filmer</h1> */}
@@ -22,12 +24,12 @@ const ReviewsPage = () => {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
       {films.map((film: LocalFilmData) => (
         <Link 
-          to={`/media/${film.id}`} 
-          key={film.id} 
+          to={`/media/${film.movieId}`} 
+          key={film.movieId} 
           className="block"
         >
           <div className="mb-6 mx-auto w-[95%] max-w-[400px]">
-            {/* <CardComponent film={film} /> */}
+            <CardComponent film={film} />
           </div>
         </Link>
       ))}
