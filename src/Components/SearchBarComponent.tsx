@@ -65,6 +65,7 @@ const SearchBar = () => {
             onBlur={notFocused}
             displayValue={(film: Film) => film?.title || ""}
             placeholder="Sök filmer..."
+            aria-label="Sök filmer"
             className="w-full pl-10 p-2 text-gray-800 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>

@@ -90,6 +90,8 @@ const HeaderComponent = () => {
           <button 
             className="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white"
             onClick={toggleMenu}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

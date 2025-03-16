@@ -23,7 +23,7 @@ const Card = ({ film }: { film?: Film | LocalFilmData }) => {
         />
         
         <div className="absolute w-full px-4 text-center text-white z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out">
-          <h3 className="font-black uppercase tracking-wider mb-2 text-lg">{film.title}</h3>
+          <h2 className="h3 font-black uppercase tracking-wider mb-2 text-lg">{film.title}</h2>
           
           {film.release_date && (
             <p className="mb-2">

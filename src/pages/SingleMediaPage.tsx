@@ -45,7 +45,6 @@ const SingleMediaPage = () => {
       const CountViews = await addMovieToLocalAPI(Number(id), filmSpecs);
       setViewCount(CountViews);
     }
-
   }
 
   

@@ -59,20 +59,20 @@ const LoginPage = () => {
                 {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
               
                 <div className="mb-4">
-                    <label className="block text-sm font-medium">Användarnamn</label>
-                    <input type="text" value={registerInfo.username} onChange={(e) => setRegisterInfo(prev => ({...prev, username: e.target.value}))}
+                    <label htmlFor='username' className="block text-sm font-medium">Användarnamn</label>
+                    <input id='username' type="text" value={registerInfo.username} onChange={(e) => setRegisterInfo(prev => ({...prev, username: e.target.value}))}
                         className="w-full p-2 border rounded" required/>
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-sm font-medium">Email</label>
-                    <input type="email" value={registerInfo.email} onChange={(e) => setRegisterInfo(prev => ({...prev, email: e.target.value}))}
+                    <label htmlFor='email' className="block text-sm font-medium">Email</label>
+                    <input id='email' type="email" value={registerInfo.email} onChange={(e) => setRegisterInfo(prev => ({...prev, email: e.target.value}))}
                         className="w-full p-2 border rounded" required/>
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-sm font-medium">Password</label>
-                    <input type="password" value={registerInfo.password} onChange={(e) => setRegisterInfo(prev => ({...prev, password: e.target.value}))}
+                    <label htmlFor='password' className="block text-sm font-medium">Lösenord</label>
+                    <input id='password' type="password" value={registerInfo.password} onChange={(e) => setRegisterInfo(prev => ({...prev, password: e.target.value}))}
                         className="w-full p-2 border rounded" required/>
                 </div>
 
