@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import { FilmDetails } from "../Interfaces/FilmInterface";
 import { addMovieToLocalAPI, mediaDetail, no_img, tmdb_img } from "../Services/MovieService";
 import ReviewFormComponent from "../Components/ReviewFormComponent";
@@ -13,6 +13,7 @@ import { formatCurrency, formatRuntime } from "@/Helpers/Formatters";
 
 const SingleMediaPage = () => {
   const { id } = useParams();
+  const location = useLocation();
   const [filmSpecs, setFilmSpecs] = useState<FilmDetails>();
   const [reviews, setReviews] = useState<ReviewResponseInterface[]>([])
   const [viewCount, setViewCount] = useState<number | null>(null);
@@ -52,7 +53,7 @@ const SingleMediaPage = () => {
   useEffect(() => {
     getFilmDetals();
     getReviews();
-  }, []);
+  }, [location.key, id]);
 
   useEffect(() => {
     if (filmSpecs) {

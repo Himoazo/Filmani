@@ -19,8 +19,9 @@ const SearchBar = () => {
   const fetchData = async () => {
     try {
       const films: Film[] = await searchMedia(query);
-      if(!films) {throw Error}
+      if (!films) { throw Error }
       setResults(films);
+
     } catch (error) {
       handleError(error, "Något gic fel");
       setResults([]);
@@ -30,7 +31,7 @@ const SearchBar = () => {
   
   useEffect(() => {
     if (debouncedSearchValue && debouncedSearchValue.length > 2) {
-      
+
       fetchData();
     } else {
       setResults([]);
@@ -43,14 +44,8 @@ const SearchBar = () => {
       setQuery(film.title || "");
       navigate(`/media/${film.id}`);
     }
-    setSelectedFilm(null);
-    setQuery("");
-    notFocused();
   };
-
-  const filteredFilms = query === "" ? results : results.filter((film) =>
-    film.title.toLowerCase().includes(query.toLowerCase())
-  );
+  
 
   const focusing = () => { setFocus(true); }
   const notFocused = () => { setFocus(false); }
@@ -74,15 +69,15 @@ const SearchBar = () => {
           />
         </div>
 
-        {filteredFilms.length === 0 && query.length >= 2 && focus && (
+        {results.length === 0 && query.length >= 2 && focus && (
           <div className="absolute w-full bg-white border border-gray-300 shadow-lg rounded-md mt-1 p-2 text-gray-500 z-10">
             Inga matchande filmer
           </div>
         )}
 
-        {filteredFilms.length > 0 && query.length >= 2 && focus && (
+        {results.length > 0 && query.length >= 2 && focus && (
           <div className="absolute w-full bg-white border border-gray-300 shadow-lg rounded-md mt-1 max-h-60 overflow-y-auto z-50">
-            {filteredFilms.map((film) => (
+            {results.map((film) => (
               <ComboboxOption
                 key={film.id}
                 value={film}
@@ -104,7 +99,7 @@ const SearchBar = () => {
                   {/* Details */}
                   <div className="flex flex-col">
                     <span className="font-medium">
-                      {film.title} {film.release_date ? (film.release_date.substring(0, 4)) : ""}
+                      {film.title} {film.release_date ? <small>({film.release_date.substring(0, 4)})</small> : ""}
                     </span>
                     <span className="text-sm text-gray-600">
                     {film.overview && film.overview.length > 100 ? film.overview.substring(0, 100) + "..." 

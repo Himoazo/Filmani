@@ -20,7 +20,7 @@ const HeaderComponent = () => {
         <div className="flex items-center justify-between py-4">
         
           <Link to="/" className="flex-shrink-0">
-            <h1 className="text-2xl font-bold tracking-wide">LOGO</h1>
+            <h1 className="font-bold font-['Bebas_Neue'] text-4xl tracking-wide text-[#E50914] drop-shadow-sm">FilMani</h1>
           </Link>
           
           
