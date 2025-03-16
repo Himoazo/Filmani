@@ -7,6 +7,7 @@ import { ReviewResponseInterface } from "@/Interfaces/ReviewInterface";
 import {  getMovieReviews } from "@/Services/ReviewService";
 import ShowReviewsComponent from "@/Components/ShowReviewsComponent";
 import { useAuth } from "@/Context/AuthContext";
+import { handleError } from "@/Helpers/Error";
 
 
 const SingleMediaPage = () => {
@@ -18,9 +19,17 @@ const SingleMediaPage = () => {
    const {  user } = useAuth();
 
   const getFilmDetals = async () => {
-    if ( id) {
-      const details = await mediaDetail(Number(id));
-      setFilmSpecs(details);
+    if (id) {
+      try {
+        const details = await mediaDetail(Number(id));
+        if (!details) {
+          throw Error;
+        }
+        setFilmSpecs(details);
+      } catch (error) {
+        handleError(error, "Något gic fel");
+      }
+      
     }
   } 
 
@@ -68,7 +77,7 @@ const SingleMediaPage = () => {
   if (!filmSpecs) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <p className="text-xl text-gray-700">Film not found</p>
+        <p className="text-xl text-gray-700">Filmen är otillgänglig för tillfället</p>
       </div>
     );
   }
@@ -172,7 +181,7 @@ const SingleMediaPage = () => {
             </div>
           </div>
           
-          {/* Reviews - spans all 3 columns */}
+          {/* Reviews */}
           <div className="md:col-span-3 bg-white bg-opacity-90 rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
             <ReviewFormComponent MovieIdIdProp={filmSpecs.id} getReviews={getReviews} />

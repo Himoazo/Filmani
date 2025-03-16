@@ -4,6 +4,7 @@ import { no_img, searchMedia, tmdb_img } from "../Services/MovieService";
 import { Film } from "../Interfaces/FilmInterface";
 import { useNavigate } from "react-router-dom";
 import useDebounce from "@/hooks/useDebounce";
+import { handleError } from "@/Helpers/Error";
 
 const SearchBar = () => {
   const [query, setQuery] = useState<string>("");
@@ -18,9 +19,10 @@ const SearchBar = () => {
   const fetchData = async () => {
     try {
       const films: Film[] = await searchMedia(query);
+      if(!films) {throw Error}
       setResults(films);
     } catch (error) {
-      console.error("Search error:", error);
+      handleError(error, "Något gic fel");
       setResults([]);
     }
   };

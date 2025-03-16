@@ -2,6 +2,7 @@ import { createContext, useState, useContext, ReactNode, useEffect} from "react"
 import { User, Login, AuthContext } from "../Interfaces/Auth";
 import axios from "axios";
 import { Register } from "react-router-dom";
+import { handleError } from "@/Helpers/Error";
 
 const AuthenticateContext = createContext<AuthContext | null>(null);
 
@@ -44,6 +45,7 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
             setUser({id: data.id, username: data.username, email: data.email, token: data.token, role: role});
            
         } catch (error) {
+            handleError(error)
             throw error;
         }
     }
@@ -60,6 +62,7 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
                 throw new Error("Det gick inte att skapa kono, kontrollera registreringsuppgifterna och försök igen");
             }
         } catch (error) {
+            handleError(error)
             throw error;
         }
     }
@@ -96,6 +99,7 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
         } catch (error) {
             localStorage.removeItem("token");
             setUser(null);
+            handleError(error)
         } finally {
             setLoading(false);
         }

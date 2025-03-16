@@ -1,5 +1,6 @@
 import { User } from "@/Interfaces/Auth";
 import axios from "axios";
+import { handleError } from "@/Helpers/Error";
 
 const url: string = "http://localhost:5034/";
 
@@ -16,8 +17,7 @@ export const getUsers = async () => {
 
         return data;
     } catch (error) {
-        console.log(error);
-        return [];
+       handleError(error)
     }
 }
 
@@ -32,10 +32,10 @@ export const deleteUser = async (userId: string) => {
             headers: { Authorization: `Bearer ${token}` }
         });
 
-        return true; // Indicate success
+        return true; 
     } catch (error) {
         console.error(error);
-        return false; // Indicate failure
+        handleError(error)
     }
 }
 
@@ -52,7 +52,6 @@ export const modifyUserRole = async (userId: string, newRole: string) => {
 
         return true;
     } catch (error) {
-        console.error(error);
-        return false;
+        handleError(error)
     }
 }

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { EditReviewInterface, ReviewInterface, ReviewResponseInterface } from "../Interfaces/ReviewInterface";
+import { handleError } from "@/Helpers/Error";
 
 const url: string = "http://localhost:5034/";
 
@@ -15,22 +16,21 @@ export const Review = async (review: ReviewInterface) => {
             }
         });
         
-
         return data;
     } catch (error: any) {
-        console.log(error);
-        return [];
+        handleError(error)
     }
 }
-
 
 export const getMovieReviews = async (MovieId: number) => {
     try {
         const { data } = await axios.get<ReviewResponseInterface[]>(`${url}api/Reviews/${MovieId}`);
-
+        if (!Array.isArray(data)) {
+            throw Error;
+        }
         return data;
     } catch (error) {
-        console.log(error);
+        handleError(error, "Det gick inte att hämta filmrecensioner")
         return [];
     }
 }
@@ -49,7 +49,7 @@ export const deleteReview = async (Id: number) => {
 
         return data;
     } catch (error) {
-        console.log(error);
+        handleError(error)
     }
 }
 
@@ -73,7 +73,7 @@ export const editReview = async (review: ReviewInterface) => {
 
         return data;
     } catch (error) {
-        console.log(error);
+        handleError(error)
     }
 }
 
@@ -92,7 +92,6 @@ export const toggleLike = async (id: number) => {
         });
         return data;
     } catch (error) {
-        console.log(error)
-        throw error
+        handleError(error)
     }
 }

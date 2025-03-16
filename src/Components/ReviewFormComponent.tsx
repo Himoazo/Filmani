@@ -6,6 +6,7 @@ import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { Button } from './ui/button';
 import { Textarea } from '@headlessui/react';
+
 interface ReviewFormProps {
   MovieIdIdProp: number;
   getReviews: () => void;
@@ -38,7 +39,6 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
 
       if (reviewToEdit && review.id == null) {
         reviewValidation.id = "ID för omdöme som ska redigeras måste anges";
-        console.log("ID för omdöme som ska redigeras måste anges");
         }
       
         if (Object.keys(reviewValidation).length > 0) {
@@ -55,20 +55,20 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
     const addReview = async () => {
         await Review(review);
       setReview({ MovieId: 0, rating: 0, reviewText: "" });
-      await getReviews();
+      getReviews();
     }
 
   const edit = async () => {
     await editReview(review);
     setReview({ MovieId: 0, rating: 0, reviewText: "" });
-    await getReviews();
+    getReviews();
   }
   
   const deleteReviews = async (id: number) => {
     const confirmation = window.confirm("Är du säker att du vill ta bort reccensionen?");
     if (!confirmation) return;
     await deleteReview(id);
-    await getReviews();
+    getReviews();
   }
   
   
@@ -76,7 +76,8 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
     <Dialog>
   <DialogTrigger asChild>
     <Button variant="outline"> {reviewToEdit ? "Redigera" : "Recensera"} </Button>
-  </DialogTrigger>
+      </DialogTrigger>
+      {formErrors.Error && <span className="text-sm text-red-500">{formErrors.Error}</span>}
   <DialogContent className="sm:max-w-[425px]">
     <DialogHeader>
       <DialogTitle>{reviewToEdit ? "Redigera omdöme" : "Recensera"}</DialogTitle>
@@ -92,9 +93,9 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
           </Label>
           <Input type="number" id="rating" name="rating" value={review.rating} 
             className="col-span-3" min="1" max="10"
-            onChange={(event) => setReview(r => ({ ...r, rating: Number(event.target.value) }))}
-          />
-        </div>
+            onChange={(event) => setReview(r => ({ ...r, rating: Number(event.target.value) }))}/>
+            </div>
+            {formErrors.rating && <span className="text-sm text-red-500">{formErrors.rating}</span>}
         <div className="grid grid-cols-4 items-center gap-4">
           <Label htmlFor="review" className="text-right">
             Recension
@@ -103,8 +104,8 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
             id="review" 
             value={review.reviewText} 
             className="col-span-3"
-            onChange={(event) => setReview(t => ({ ...t, reviewText: event.target.value }))}
-          />
+                onChange={(event) => setReview(t => ({ ...t, reviewText: event.target.value }))} />
+              {formErrors.reviewText && <span className="text-sm text-red-500">{formErrors.reviewText}</span>}
         </div>
       </div>
       <DialogFooter>
