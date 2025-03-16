@@ -88,7 +88,7 @@ const SingleMediaPage = () => {
   
   const backdropUrl = filmSpecs.backdrop_path
     ? `${tmdb_img}original/${filmSpecs.backdrop_path}`
-    : posterUrl;
+    : ``;
  
   return (
     <div className="relative min-h-screen">
@@ -108,7 +108,7 @@ const SingleMediaPage = () => {
           {/* Poster Column */}
           <div className="md:col-span-1">
             <img 
-              src={posterUrl}
+              src={posterUrl} 
               alt={filmSpecs.title}
               className="w-full rounded-lg shadow-xl"
             />

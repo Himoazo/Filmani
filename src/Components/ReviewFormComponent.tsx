@@ -6,6 +6,7 @@ import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { Button } from './ui/button';
 import { Textarea } from '@headlessui/react';
+import { toast } from 'react-toastify';
 
 interface ReviewFormProps {
   MovieIdIdProp: number;
@@ -16,6 +17,7 @@ interface ReviewFormProps {
 const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFormProps) => {
     const [review, setReview] = useState<ReviewInterface>({MovieId: 0, rating: 0, reviewText: ""});
     const [formErrors, setFormErrors] = useState<ReviewFormErrorInterface>({})
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
       setReview(prev => ({ ...prev, MovieId: MovieIdIdProp }));
@@ -53,27 +55,30 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
     }
 
     const addReview = async () => {
-        await Review(review);
+      await Review(review);
       setReview({ MovieId: 0, rating: 0, reviewText: "" });
+      toast("Du har lagt till en recenssion! Tack för din åsikt");
       getReviews();
     }
 
   const edit = async () => {
     await editReview(review);
     setReview({ MovieId: 0, rating: 0, reviewText: "" });
+
     getReviews();
   }
   
   const deleteReviews = async (id: number) => {
     const confirmation = window.confirm("Är du säker att du vill ta bort reccensionen?");
     if (!confirmation) return;
+    
     await deleteReview(id);
     getReviews();
   }
   
   
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen} >
   <DialogTrigger asChild>
     <Button variant="outline"> {reviewToEdit ? "Redigera" : "Recensera"} </Button>
       </DialogTrigger>

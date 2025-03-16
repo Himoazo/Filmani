@@ -1,6 +1,7 @@
 import axios from "axios";
 import { EditReviewInterface, ReviewInterface, ReviewResponseInterface } from "../Interfaces/ReviewInterface";
 import { handleError } from "@/Helpers/Error";
+import { toast } from "react-toastify";
 
 const url: string = "http://localhost:5034/";
 
@@ -46,7 +47,7 @@ export const deleteReview = async (Id: number) => {
                 Authorization: `Bearer ${token}`
             }
         });
-
+        toast("Filmrecessiononen har raderats");
         return data;
     } catch (error) {
         handleError(error)
@@ -70,10 +71,10 @@ export const editReview = async (review: ReviewInterface) => {
                 Authorization: `Bearer ${token}`
             }
         });
-
+        toast("Filmrecessiononen har ändrats");
         return data;
     } catch (error) {
-        handleError(error)
+        handleError(error, "Det gick inte att redigera")
     }
 }
 

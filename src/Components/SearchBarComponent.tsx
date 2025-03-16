@@ -81,7 +81,7 @@ const SearchBar = () => {
         )}
 
         {filteredFilms.length > 0 && query.length >= 2 && focus && (
-          <div className="absolute w-full bg-white border border-gray-300 shadow-lg rounded-md mt-1 max-h-60 overflow-y-auto z-10">
+          <div className="absolute w-full bg-white border border-gray-300 shadow-lg rounded-md mt-1 max-h-60 overflow-y-auto z-50">
             {filteredFilms.map((film) => (
               <ComboboxOption
                 key={film.id}

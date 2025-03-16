@@ -7,7 +7,7 @@ const url: string = "https://api.themoviedb.org/3";
 const localApi: string = "http://localhost:5034"
 const key: string = import.meta.env.VITE_API_KEY;
 export const tmdb_img: string = "https://image.tmdb.org/t/p/";
-export const no_img: string = "vite.svg";
+export const no_img: string = "/no-img.svg";
 // Popular movies
 export const getPopMovies = async (page: number) => {
 
