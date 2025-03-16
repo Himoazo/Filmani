@@ -15,7 +15,7 @@ interface ReviewFormProps {
   }
 
 const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFormProps) => {
-    const [review, setReview] = useState<ReviewInterface>({MovieId: 0, rating: 0, reviewText: ""});
+    const [review, setReview] = useState<ReviewInterface>({MovieId: MovieIdIdProp, rating: 0, reviewText: ""});
     const [formErrors, setFormErrors] = useState<ReviewFormErrorInterface>({})
     const [open, setOpen] = useState(false);
 
@@ -24,11 +24,13 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
       if (reviewToEdit) {
         setReview(prev => ({ ...prev, id: reviewToEdit.id, rating: reviewToEdit.rating, reviewText: reviewToEdit.reviewText }))
       }
-    }, [])
+    }, [reviewToEdit, MovieIdIdProp])
 
     const validateReview = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        
+      event.preventDefault();
+
+        setFormErrors({});
+      
         const reviewValidation: ReviewFormErrorInterface = {};
 
         if (!review.MovieId) {
@@ -39,33 +41,43 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
             reviewValidation.rating = "Betyget måste anges och vara mellan 1 och 10";
         }
 
+      if (review.reviewText.length > 1000) {
+        reviewValidation.reviewText = "Texten kan inte vara längre än 1000 tecken";
+        }
+      
       if (reviewToEdit && review.id == null) {
         reviewValidation.id = "ID för omdöme som ska redigeras måste anges";
         }
       
         if (Object.keys(reviewValidation).length > 0) {
-            setFormErrors(reviewValidation);
-        } else if (reviewToEdit) {
-          setFormErrors({});
-          edit();
-        } else {
-            setFormErrors({});
-            addReview();
-        }
+          setFormErrors(reviewValidation);
+
+          return;
+      } 
+      if (reviewToEdit) {
+        await edit();
+      } else {
+        await addReview();
+      }
+    
     }
 
-    const addReview = async () => {
+  const addReview = async () => {
+
       await Review(review);
-      setReview({ MovieId: 0, rating: 0, reviewText: "" });
+      setReview({ MovieId: MovieIdIdProp, rating: 0, reviewText: "" });
       toast("Du har lagt till en recenssion! Tack för din åsikt");
       getReviews();
+      setOpen(false);
     }
 
   const edit = async () => {
+
     await editReview(review);
-    setReview({ MovieId: 0, rating: 0, reviewText: "" });
+    setReview({ MovieId: MovieIdIdProp, rating: 0, reviewText: "" });
 
     getReviews();
+    setOpen(false);
   }
   
   const deleteReviews = async (id: number) => {
@@ -78,7 +90,14 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
   
   
   return (
-    <Dialog open={open} onOpenChange={setOpen} >
+    <Dialog open={open} onOpenChange={(isOpen) => {
+      setOpen(isOpen);
+      if (isOpen && !reviewToEdit) {
+        setFormErrors({});
+        setReview({ MovieId: MovieIdIdProp, rating: 0, reviewText: "" });
+      }
+    }}>
+    
   <DialogTrigger asChild>
     <Button variant="outline"> {reviewToEdit ? "Redigera" : "Recensera"} </Button>
       </DialogTrigger>

@@ -20,7 +20,7 @@ const ShowReviewsComponent = ({reviewsProp, getReviews}: ShowReviewsComponentPro
           {reviewsProp.appUserName || "Anonymous User"}
         </div>
         <div className="text-xs text-gray-500">
-          Rating {reviewsProp.rating}
+          Betyg {reviewsProp.rating}
         </div>
         <div className="text-xs text-gray-500">
           Datum {new Date(reviewsProp.createdAt).toLocaleDateString()}

@@ -8,6 +8,7 @@ import {  getMovieReviews } from "@/Services/ReviewService";
 import ShowReviewsComponent from "@/Components/ShowReviewsComponent";
 import { useAuth } from "@/Context/AuthContext";
 import { handleError } from "@/Helpers/Error";
+import { formatCurrency, formatRuntime } from "@/Helpers/Formatters";
 
 
 const SingleMediaPage = () => {
@@ -43,24 +44,10 @@ const SingleMediaPage = () => {
       const CountViews = await addMovieToLocalAPI(Number(id), filmSpecs);
       setViewCount(CountViews);
     }
-    if (!filmSpecs) {
-      console.log("filmSpecs is null")
-    }
+
   }
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
-
-  const formatRuntime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hours}h ${mins}m`;
-  };
+  
 
   useEffect(() => {
     getFilmDetals();
@@ -70,6 +57,7 @@ const SingleMediaPage = () => {
   useEffect(() => {
     if (filmSpecs) {
       addNewMovieOrGetViewCount();
+
     }
   },[filmSpecs])
 
@@ -138,25 +126,26 @@ const SingleMediaPage = () => {
             <div className="p-4  mb-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center">
+                <span className="ml-2 text-sm text-gray-600">Tittarnas betyg i andra sajter:</span>
                   <div className="h-12 w-12 rounded-full flex items-center justify-center bg-blue-600 text-white font-bold text-xl">
                     {Math.round(filmSpecs.vote_average * 10)}%
                   </div>
-                  <span className="ml-2 text-sm text-gray-600">User Score</span>
+                  
                 </div>
               </div>
               
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span className="font-semibold">Runtime:</span> {formatRuntime(filmSpecs.runtime)}
+                  <span className="font-semibold">Filmlängd:</span> {formatRuntime(filmSpecs.runtime)}
                 </div>
                 <div>
-                  <span className="font-semibold">Languages:</span> {filmSpecs.spoken_languages.map(lang => lang.english_name).join(', ')}
+                  <span className="font-semibold">Språk:</span> {filmSpecs.spoken_languages.map(lang => lang.english_name).join(', ')}
                 </div>
                 <div>
-                  <span className="font-semibold">Budget:</span> {formatCurrency(filmSpecs.budget)}
+                  <span className="font-semibold">Budget:</span> {filmSpecs.budget ? formatCurrency(filmSpecs.budget) : "okänt"}
                 </div>
                 <div>
-                  <span className="font-semibold">Revenue:</span> {formatCurrency(filmSpecs.revenue)}
+                  <span className="font-semibold">Omsättning:</span> {filmSpecs.revenue ? formatCurrency(filmSpecs.revenue) : "Okänt"}
                 </div>
                 <div>
                   <span className="font-semibold">Visad på Filmani:</span> {viewCount ? viewCount : "Otillgängligt"}
@@ -166,6 +155,7 @@ const SingleMediaPage = () => {
             
             <div className="my-6">
               <div className="flex flex-wrap gap-4">
+              <span className="font-semibold">Produktionsbolag:</span>
                 {filmSpecs.production_companies.filter(company=> company.logo_path).map(company => (
                   <div key={company.id} className="flex items-center bg-white bg-opacity-80 rounded-lg px-3 py-2">
                     {company.logo_path ? (
@@ -186,11 +176,11 @@ const SingleMediaPage = () => {
             <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
             <ReviewFormComponent MovieIdIdProp={filmSpecs.id} getReviews={getReviews} />
           </div>
-          <div>
+          <div className="md:col-span-3">
             {reviews.length > 0 && (
               <div className="mt-8">
                 <h3 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">User Reviews</h3>
-                <div className="space-y-4">
+                <div className="space-y-4 ">
                   {reviews.map((review) => (
                     <div key={review.id}>
                       <ShowReviewsComponent reviewsProp={review} getReviews={getReviews} />
