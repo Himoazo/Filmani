@@ -127,10 +127,10 @@ const SingleMediaPage = () => {
             <div className="p-4  mb-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center">
-                <span className="ml-2 text-sm text-gray-600">Tittarnas betyg i andra sajter:</span>
+                {/* <span className="ml-2 text-sm text-gray-600">Tittarnas betyg i andra sajter:</span>
                   <div className="h-12 w-12 rounded-full flex items-center justify-center bg-blue-600 text-white font-bold text-xl">
                     {Math.round(filmSpecs.vote_average * 10)}%
-                  </div>
+                  </div> */}
                   
                 </div>
               </div>
@@ -149,7 +149,10 @@ const SingleMediaPage = () => {
                   <span className="font-semibold">Omsättning:</span> {filmSpecs.revenue ? formatCurrency(filmSpecs.revenue) : "Okänt"}
                 </div>
                 <div>
-                  <span className="font-semibold">Visad på Filmani:</span> {viewCount ? viewCount : "Otillgängligt"}
+                  <span className="font-semibold">Land:</span> {filmSpecs.origin_country ? filmSpecs.origin_country : "Okänt"}
+                </div>
+                <div>
+                  <span className="font-semibold">Visad på Filmani:</span> {viewCount ? viewCount +"-gånger" : "Otillgängligt"}
                 </div>
               </div>
             </div>
