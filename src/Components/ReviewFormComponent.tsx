@@ -6,7 +6,7 @@ import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { Button } from './ui/button';
 import { Textarea } from '@headlessui/react';
-import { toast } from 'react-toastify';
+
 
 interface ReviewFormProps {
   MovieIdIdProp: number;
@@ -21,6 +21,7 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
 
     useEffect(() => {
       setReview(prev => ({ ...prev, MovieId: MovieIdIdProp }));
+      
       if (reviewToEdit) {
         setReview(prev => ({ ...prev, id: reviewToEdit.id, rating: reviewToEdit.rating, reviewText: reviewToEdit.reviewText }))
       }
@@ -30,7 +31,7 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
       event.preventDefault();
 
         setFormErrors({});
-      
+        
         const reviewValidation: ReviewFormErrorInterface = {};
 
         if (!review.MovieId) {
@@ -66,7 +67,7 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
 
       await Review(review);
       setReview({ MovieId: MovieIdIdProp, rating: 0, reviewText: "" });
-      toast("Du har lagt till en recenssion! Tack för din åsikt");
+
       getReviews();
       setOpen(false);
     }
@@ -98,47 +99,131 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
       }
     }}>
     
-  <DialogTrigger asChild>
-    <Button variant="outline"> {reviewToEdit ? "Redigera" : "Recensera"} </Button>
-      </DialogTrigger>
-      {formErrors.Error && <span className="text-sm text-red-500">{formErrors.Error}</span>}
-  <DialogContent className="sm:max-w-[425px]">
-    <DialogHeader>
-      <DialogTitle>{reviewToEdit ? "Redigera omdöme" : "Recensera"}</DialogTitle>
-      <DialogDescription>
-        Skriv ditt omdömme om denna film!
-      </DialogDescription>
-    </DialogHeader>
-    <form onSubmit={validateReview}>
-      <div className="grid gap-4 py-4">
+<DialogTrigger asChild>
+  {reviewToEdit ? (
+    <Button 
+      variant="outline" className="bg-amber-50 hover:bg-amber-100 text-amber-700 border-amber-300 hover:border-amber-400 
+      transition-colors duration-200 flex items-center gap-2 cursor-pointer">
+      Redigera
+    </Button>
+  ) : (
+    <Button variant="outline" className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-300 
+    hover:border-blue-400 transition-colors duration-200 flex items-center gap-2 cursor-pointer" >
+              <span className="relative flex size-3">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+              <span className="relative inline-flex size-3 rounded-full bg-sky-500"></span>
+              </span>
+                Recensera
+    </Button>
+  )}
+</DialogTrigger>
+{formErrors.Error && (
+  <span className="text-sm text-red-500 flex items-center gap-1.5 mt-1 animate-fade-in">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="12"></line>
+      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+    {formErrors.Error}
+  </span>
+)}
+<DialogContent className="sm:max-w-[450px] bg-gradient-to-b from-white to-gray-50 border-0 shadow-lg rounded-xl p-0 overflow-hidden">
+  <DialogHeader className="bg-blue-50 px-6 py-4 border-b border-blue-100">
+    <DialogTitle className="text-2xl font-bold text-blue-800">
+      {reviewToEdit ? "Redigera omdöme" : "Recensera"}
+    </DialogTitle>
+    <DialogDescription className="text-blue-700 mt-1">
+      Skriv ditt omdömme om denna film!
+    </DialogDescription>
+  </DialogHeader>
+  <form onSubmit={validateReview} className="px-6">
+    <div className="grid gap-6 py-6">
+      <div className="space-y-1">
         <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="rating" className="text-right">
+          <Label htmlFor="rating" className="text-right font-medium text-gray-700">
             Betyg
           </Label>
-          <Input type="number" id="rating" name="rating" value={review.rating} 
-            className="col-span-3" min="1" max="10"
-            onChange={(event) => setReview(r => ({ ...r, rating: Number(event.target.value) }))}/>
-            </div>
-            {formErrors.rating && <span className="text-sm text-red-500">{formErrors.rating}</span>}
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="review" className="text-right">
+          <div className="col-span-3">
+            <Input 
+              type="number" 
+              id="rating" 
+              name="rating" 
+              value={review.rating} 
+              className="border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-md shadow-sm transition-all duration-200"
+              min="1" 
+              max="10"
+              onChange={(event) => setReview(r => ({ ...r, rating: Number(event.target.value) }))}
+            />
+          </div>
+        </div>
+        {formErrors.rating && (
+          <div className="col-start-2 col-span-3 ml-4">
+            <span className="text-sm text-red-500 flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              {formErrors.rating}
+            </span>
+          </div>
+        )}
+      </div>
+      
+      <div className="space-y-1">
+        <div className="grid grid-cols-4 items-start gap-4">
+          <Label htmlFor="review" className="text-right font-medium text-gray-700 mt-2">
             Recension
           </Label>
-          <Textarea 
-            id="review" 
-            value={review.reviewText} 
-            className="col-span-3"
-                onChange={(event) => setReview(t => ({ ...t, reviewText: event.target.value }))} />
-              {formErrors.reviewText && <span className="text-sm text-red-500">{formErrors.reviewText}</span>}
+          <div className="col-span-3">
+            <Textarea 
+              id="review" 
+              value={review.reviewText} 
+              className="w-full border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-md shadow-sm transition-all duration-200 min-h-[120px]"
+              onChange={(event) => setReview(t => ({ ...t, reviewText: event.target.value }))}
+            />
+          </div>
         </div>
+        {formErrors.reviewText && (
+          <div className="col-start-2 col-span-3 ml-4">
+            <span className="text-sm text-red-500 flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              {formErrors.reviewText}
+            </span>
+          </div>
+        )}
       </div>
-      <DialogFooter>
-            <Button type="submit">Save changes</Button>
-            {reviewToEdit && <Button onClick={()=> deleteReviews(reviewToEdit.id)}>Delete</Button>}
-      </DialogFooter>
-    </form>
-  </DialogContent>
-</Dialog>   
+    </div>
+    
+    <DialogFooter className="py-4 border-t border-gray-100 gap-3">
+      <Button 
+        type="submit"
+        className="bg-blue-600 hover:bg-blue-700 text-white transition-colors px-6 rounded-full"
+      >
+        Spara
+      </Button>
+      
+      {reviewToEdit && (
+        <Button 
+          type="button" 
+          onClick={(e) => { 
+            e.preventDefault(); 
+            deleteReviews(reviewToEdit.id); 
+            setOpen(false);
+          }}
+          className="bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 transition-colors px-6 rounded-full"
+        >
+          Ta bort
+        </Button>
+      )}
+    </DialogFooter>
+  </form>
+</DialogContent>
+</Dialog>
       );
 }
 

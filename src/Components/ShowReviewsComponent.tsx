@@ -1,3 +1,4 @@
+import { useAuth } from '@/Context/AuthContext';
 import { ReviewResponseInterface } from '@/Interfaces/ReviewInterface'
 import { toggleLike } from '@/Services/ReviewService';
 
@@ -8,13 +9,13 @@ interface ShowReviewsComponentProps {
 }
 
 const ShowReviewsComponent = ({reviewsProp, getReviews}: ShowReviewsComponentProps) => {
-  
+  const {  user } = useAuth();
   const Like = async (id: number) => {
     await toggleLike(id);
     getReviews();
   }
   return (
-    <div className="bg-white bg-opacity-90 rounded-lg p-4 mb-4 shadow-md transition-all hover:shadow-lg">
+    <div>
       <div className="flex justify-between items-start mb-2">
         <div className="font-semibold text-lg text-blue-700">
           {reviewsProp.appUserName || "Anonymous User"}
@@ -26,15 +27,22 @@ const ShowReviewsComponent = ({reviewsProp, getReviews}: ShowReviewsComponentPro
           Datum {new Date(reviewsProp.createdAt).toLocaleDateString()}
         </div>
         <div className="text-xs text-gray-500">
-          Likes: {reviewsProp.likeCount}
+          Likes: {reviewsProp.likeCount} 
         </div>
-        <div className=" text-gray-500">
-          <button onClick={()=> {Like(reviewsProp.id)}}>Like button</button>
+        <div className="text-gray-500 relative group">
+          <button onClick={() => Like(reviewsProp.id)} 
+            disabled={!user} 
+            className={!user ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+            title={!user ? "Logga in för att kunna gilla recensioner" : ""}>
+            {reviewsProp.hasUserLiked ? '❤️ Gillad' : '🤍 Gilla!!'}
+          </button>
         </div>
+
+
       </div>
       
       <div className="text-gray-700 whitespace-pre-line">
-        {reviewsProp.reviewText || "No written review provided."}
+        {reviewsProp.reviewText || <small>Ingen text</small>}
       </div>
       </div>
   )

@@ -23,6 +23,7 @@ export interface ReviewResponseInterface {
   appUserName: string;
   likeCount: number;
   createdAt: string;
+  hasUserLiked: boolean;
 }
 
 export interface EditReviewInterface {

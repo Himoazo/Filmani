@@ -172,17 +172,18 @@ const SingleMediaPage = () => {
           </div>
           
           {/* Reviews */}
-          <div className="md:col-span-3 bg-white bg-opacity-90 rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
+          <div className="md:col-span-3  rounded-lg shadow-lg p-6">
+          <div className=" flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-semibold flex items-center">Recensioner</h2>
             <ReviewFormComponent MovieIdIdProp={filmSpecs.id} getReviews={getReviews} />
           </div>
           <div className="md:col-span-3">
             {reviews.length > 0 && (
               <div className="mt-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">User Reviews</h3>
                 <div className="space-y-4 ">
                   {reviews.map((review) => (
-                    <div key={review.id}>
+                    <div key={review.id} style={{opacity: 0.85}}
+                      className=" bg-white rounded-lg p-4 mb-4 space-y-8 shadow-md transition-all hover:shadow-lg">
                       <ShowReviewsComponent reviewsProp={review} getReviews={getReviews} />
                       {review.appUserId == user?.id || user?.role == "Admin" ? 
                       <ReviewFormComponent MovieIdIdProp={filmSpecs.id} getReviews={getReviews} reviewToEdit={review} /> : "" 
@@ -194,6 +195,8 @@ const SingleMediaPage = () => {
             )}
             
           </div>
+          </div>
+          
         </div>
       </div>
     </div>

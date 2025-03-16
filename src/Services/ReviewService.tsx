@@ -16,16 +16,24 @@ export const Review = async (review: ReviewInterface) => {
                 Authorization: `Bearer ${token}`
             }
         });
-        
+        if (data && data.status == 201) {
+            toast.success("Du har lagt till en recenssion! Tack för din åsikt");
+        }
         return data;
-    } catch (error: any) {
-        handleError(error)
+    } catch (error) {
+        handleError(error, "Kunde inte lägga till recenssion. Kontrollera att du är inloggad och försök igen");
     }
 }
 
 export const getMovieReviews = async (MovieId: number) => {
+    const token = localStorage.getItem("token");
     try {
-        const { data } = await axios.get<ReviewResponseInterface[]>(`${url}api/Reviews/${MovieId}`);
+        const { data } = token 
+            ? await axios.get<ReviewResponseInterface[]>(`${url}api/Reviews/${MovieId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+              })
+            : await axios.get<ReviewResponseInterface[]>(`${url}api/Reviews/${MovieId}`);
+        
         if (!Array.isArray(data)) {
             throw Error;
         }
@@ -47,7 +55,11 @@ export const deleteReview = async (Id: number) => {
                 Authorization: `Bearer ${token}`
             }
         });
-        toast("Filmrecessiononen har raderats");
+        
+        if (data && data.status == 204) {
+            toast.success("Filmrecessiononen har raderats");
+        }
+
         return data;
     } catch (error) {
         handleError(error)
@@ -71,7 +83,11 @@ export const editReview = async (review: ReviewInterface) => {
                 Authorization: `Bearer ${token}`
             }
         });
-        toast("Filmrecessiononen har ändrats");
+        
+        if (data && data.status == 204) {
+            toast.success("Filmrecessiononen har ändrats");
+        }
+
         return data;
     } catch (error) {
         handleError(error, "Det gick inte att redigera")
@@ -91,6 +107,7 @@ export const toggleLike = async (id: number) => {
                 Authorization: `Bearer ${token}`
             }
         });
+
         return data;
     } catch (error) {
         handleError(error)
