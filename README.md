@@ -1,54 +1,38 @@
-# React + TypeScript + Vite
+# Filmani film webbapplication
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Webbapplikationen Filmani är en plattform för informationssökning och recensioner gällande filmer. I denna applikation kan du:
+- Se vilka filmer är trendande nuförtiden
+- Sök efter en specifik film och läs dess detaljer i en gigantisk filmdatabas
+- Skapa användar konto 
+- Lämna filmrecension 
+- Gilla andras filmrecensioner 
+- Se hur många ggr har en film sökts/visats på Filmani
+- Möjlighet för användarkonto med administrations behörigheter som kan hantera andra användarens konto och filmrecensioner
 
-Currently, two official plugins are available:
+Denna applikation är utvecklad med [React](https://react.dev/) v19 och stylad med [Tailwind](https://tailwindcss.com/) v4.0
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Filmani, för användarkonton och recensioner konsumerar en REST API som är byggd med ASP.NET Core 9.0 web api.
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Installation och körning i lokalmiljö:
+1. Klona repo:t:
+```sh
+git clone https://github.com/Himoazo/Filmani.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Installera beroenden (Dependencies):
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Navigera till katalogen där appen är klonad till sedan
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```sh
+npm install
+```
+
+3. Skapa konto och hämta egen API key från [TMDB](https://www.themoviedb.org/signup) 
+
+4. Fyll i din nyckel som värdet för VITE_API_KEY= i .env.sample filen, ta bort ordet "sample" och spara.
+
+5. Kör applikationen lokalt:
+```sh
+npm run dev
 ```
