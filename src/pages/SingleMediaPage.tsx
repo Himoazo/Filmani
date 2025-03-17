@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom"
+import { useLocation, useNavigationType, useParams } from "react-router-dom"
 import { FilmDetails } from "../Interfaces/FilmInterface";
-import { addMovieToLocalAPI, mediaDetail, no_img, tmdb_img } from "../Services/MovieService";
+import { addMovieToLocalAPI, getViewCount, mediaDetail, no_img, tmdb_img } from "../Services/MovieService";
 import ReviewFormComponent from "../Components/ReviewFormComponent";
 import { ReviewResponseInterface } from "@/Interfaces/ReviewInterface";
 import {  getMovieReviews } from "@/Services/ReviewService";
@@ -17,7 +17,7 @@ const SingleMediaPage = () => {
   const [filmSpecs, setFilmSpecs] = useState<FilmDetails>();
   const [reviews, setReviews] = useState<ReviewResponseInterface[]>([])
   const [viewCount, setViewCount] = useState<number | null>(null);
-
+  const navigationType = useNavigationType();
    const {  user } = useAuth();
 
   const getFilmDetals = async () => {
@@ -47,6 +47,16 @@ const SingleMediaPage = () => {
     }
   }
 
+  const getCount = async () => {
+    if (filmSpecs) {
+      const count = await getViewCount(Number(id))
+      if (count === 0) {
+        addNewMovieOrGetViewCount();
+        return;
+      }
+      setViewCount(count);
+    }
+  }
   
 
   useEffect(() => {
@@ -56,8 +66,11 @@ const SingleMediaPage = () => {
 
   useEffect(() => {
     if (filmSpecs) {
-      addNewMovieOrGetViewCount();
-
+      if (navigationType === "POP") {
+        getCount();
+      } else {
+        addNewMovieOrGetViewCount();
+      }
     }
   },[filmSpecs])
 

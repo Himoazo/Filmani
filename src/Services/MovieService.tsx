@@ -77,3 +77,14 @@ export const getLocalFilms = async () => {
         return [];
     }
 }
+
+//Get view count
+export const getViewCount = async (id: number) => {
+    try {
+        const { data } = await axios.get<number>(`${localApi}/api/Films/${id}`);
+
+        return data;
+    } catch (error) {
+        return 0;
+    }
+}

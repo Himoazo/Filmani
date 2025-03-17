@@ -10,12 +10,6 @@ const Card = ({ film }: { film?: Film | LocalFilmData }) => {
        
         <div className="absolute inset-0 bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
         
-        
-        {/* <div className="absolute top-0 right-0 z-20 bg-gradient-to-l from-blue-600 to-transparent px-3 py-1 text-white font-bold">
-          {film.vote_average ? film.vote_average.toFixed(1) : "N/A"}
-        </div> */}
-        
-       
         <img 
           src={film.poster_path ? `${tmdb_img}w342/${film.poster_path}` : `${no_img}`} 
           alt={film.title}
