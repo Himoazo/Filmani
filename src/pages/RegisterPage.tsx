@@ -44,12 +44,11 @@ const LoginPage = () => {
             return;
         }
 
-        try {
-            
+        try {    
             await signUp(registerInfo);
             navigate("/");
-        } catch (error) {
-            setError( String(error));
+        } catch (error) { 
+            setError("Ett fel har inträffats, kontrollera inmatade uppgifter och försök igen senare");
         }
     };
 
