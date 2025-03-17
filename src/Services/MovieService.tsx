@@ -1,18 +1,18 @@
-import axios from "axios";
 import { FilmDetails, FilmResponse, LocalFilmData } from "../Interfaces/FilmInterface";
 import { handleError } from "@/Helpers/Error";
+import { LOCAL_API, TMDB_API } from "./UrlService";
 
 
-const url: string = "https://api.themoviedb.org/3";
-const localApi: string = "http://localhost:5034"
-const key: string = import.meta.env.VITE_API_KEY;
+/* const url: string = "https://api.themoviedb.org/3";
+const localApi: string = "https://filmapi-production-3b72.up.railway.app"
+const key: string = import.meta.env.VITE_API_KEY; */
 export const tmdb_img: string = "https://image.tmdb.org/t/p/";
 export const no_img: string = "/no-img.svg";
 // Popular movies
 export const getPopMovies = async (page: number) => {
 
     try {
-        const { data } = await axios.get<FilmResponse>(`${url}/trending/movie/week?language=sv-SV&page=${page}&api_key=${key}`);
+        const { data } = await TMDB_API.get<FilmResponse>(`/trending/movie/week?language=sv-SV&page=${page}`);
         
         return data.results;
     } catch (error) {
@@ -24,7 +24,7 @@ export const getPopMovies = async (page: number) => {
 // Serach media
 export const searchMedia = async (keyword: string) => {
     try {
-        const { data } = await axios.get(`${url}/search/movie?query=${keyword}&api_key=${key}&language=sv-SV`)
+        const { data } = await TMDB_API.get(`/search/movie?query=${keyword}&language=sv-SV`)
 
         return data.results;
         
@@ -35,7 +35,7 @@ export const searchMedia = async (keyword: string) => {
 
 export const mediaDetail = async (id: number) => {
     try {
-        const { data } = await axios.get<FilmDetails>(`${url}/movie/${id}?api_key=${key}&language=sv-SV`);
+        const { data } = await TMDB_API.get<FilmDetails>(`/movie/${id}?language=sv-SV`);
 
         return data;
     } catch (error) {
@@ -54,7 +54,7 @@ export const addMovieToLocalAPI = async (id: number, filmSpecs: FilmDetails) => 
     }
 
     try {
-        const data = await axios.post<LocalFilmData>(`${localApi}/api/Films`, newFilm);
+        const data = await LOCAL_API.post<LocalFilmData>(`/api/Films`, newFilm);
         const count: number = data.data.viewCount!
         return count;
         
@@ -66,7 +66,7 @@ export const addMovieToLocalAPI = async (id: number, filmSpecs: FilmDetails) => 
 
 export const getLocalFilms = async () => {
     try {
-        const { data } = await axios.get<LocalFilmData[]>(`${localApi}/api/Films/reviewed`);
+        const { data } = await LOCAL_API.get<LocalFilmData[]>(`/api/Films/reviewed`);
 
         if (!Array.isArray(data)) {
             throw Error;
@@ -81,7 +81,7 @@ export const getLocalFilms = async () => {
 //Get view count
 export const getViewCount = async (id: number) => {
     try {
-        const { data } = await axios.get<number>(`${localApi}/api/Films/${id}`);
+        const { data } = await LOCAL_API.get<number>(`/api/Films/${id}`);
 
         return data;
     } catch (error) {

@@ -1,9 +1,10 @@
-import axios from "axios";
+
 import { EditReviewInterface, ReviewInterface, ReviewResponseInterface } from "../Interfaces/ReviewInterface";
 import { handleError } from "@/Helpers/Error";
 import { toast } from "react-toastify";
+import { LOCAL_API } from "./UrlService";
 
-const url: string = "http://localhost:5034/";
+/* const url: string = "http://localhost:5034/"; */
 
 //Add review
 export const Review = async (review: ReviewInterface) => {
@@ -12,7 +13,7 @@ export const Review = async (review: ReviewInterface) => {
         if (!token) {
             throw "Du måste vara inloggad för att recenssera";
         }
-        const data  = await axios.post<ReviewInterface>(`${url}api/Reviews`, review, {
+        const data  = await LOCAL_API.post<ReviewInterface>(`/api/Reviews`, review, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -22,6 +23,7 @@ export const Review = async (review: ReviewInterface) => {
         }
         return data;
     } catch (error) {
+        console.log(error)
         handleError(error, "Kunde inte lägga till recenssion. Kontrollera att du är inloggad och försök igen");
     }
 }
@@ -30,10 +32,10 @@ export const getMovieReviews = async (MovieId: number) => {
     const token = localStorage.getItem("token");
     try {
         const { data } = token 
-            ? await axios.get<ReviewResponseInterface[]>(`${url}api/Reviews/${MovieId}`, {
+            ? await LOCAL_API.get<ReviewResponseInterface[]>(`/api/Reviews/${MovieId}`, {
                 headers: { Authorization: `Bearer ${token}` }
               })
-            : await axios.get<ReviewResponseInterface[]>(`${url}api/Reviews/${MovieId}`);
+            : await LOCAL_API.get<ReviewResponseInterface[]>(`/api/Reviews/${MovieId}`);
         
         if (!Array.isArray(data)) {
             throw Error;
@@ -51,7 +53,7 @@ export const deleteReview = async (Id: number) => {
         if (!token) {
             throw "Du måste vara inloggad för att recenssera";
         }
-        const data = await axios.delete(`${url}api/Reviews/${Id}`, {
+        const data = await LOCAL_API.delete(`/api/Reviews/${Id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -79,7 +81,7 @@ export const editReview = async (review: ReviewInterface) => {
             rating: review.rating,
             reviewText: review.reviewText
         }
-        const data = await axios.put(`${url}api/Reviews/${review.id}`, editedReview ,{
+        const data = await LOCAL_API.put(`/api/Reviews/${review.id}`, editedReview ,{
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -103,7 +105,7 @@ export const toggleLike = async (id: number) => {
             throw "Du måste vara inloggad för att redigera";
         }
 
-        const { data } = await axios.post(`${url}api/Reviews/toggle-like/${id}`, {}, {
+        const { data } = await LOCAL_API.post(`/api/Reviews/toggle-like/${id}`, {}, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -21,7 +21,7 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
     const login =async (loginData: Login) => {
         
         try {
-            const response = await fetch("http://localhost:5034/api/account/login", {
+            const response = await fetch("https://filmapi-production-3b72.up.railway.app/api/account/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -82,7 +82,7 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
         }
 
         try {
-            const response = await fetch("http://localhost:5034/api/account/me", {
+            const response = await fetch("https://filmapi-production-3b72.up.railway.app/api/account/me", {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json",
