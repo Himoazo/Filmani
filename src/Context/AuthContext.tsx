@@ -1,8 +1,8 @@
 import { createContext, useState, useContext, ReactNode, useEffect} from "react";
 import { User, Login, AuthContext } from "../Interfaces/Auth";
-import axios from "axios";
 import { Register } from "react-router-dom";
 import { handleError } from "@/Helpers/Error";
+import { LOCAL_API } from "@/Services/UrlService";
 
 const AuthenticateContext = createContext<AuthContext | null>(null);
 
@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
 
     const signUp = async (registerData: Register) => {
         try {
-            const {data} = await axios.post<User>("http://localhost:5034/api/account/register", registerData);
+            const {data} = await LOCAL_API.post<User>("/api/account/register", registerData);
 
             if (data) {
                 const role = decodeRole(data.token);

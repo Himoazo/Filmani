@@ -2,7 +2,7 @@ import axios from "axios";
 
 const tmdb: string = "https://api.themoviedb.org/3";
 const local: string = "https://filmapi-production-3b72.up.railway.app/"
-/* const local: string = "http://localhost:5034" */
+
 
 //Axios instances
 

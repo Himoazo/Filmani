@@ -4,8 +4,6 @@ import { handleError } from "@/Helpers/Error";
 import { toast } from "react-toastify";
 import { LOCAL_API } from "./UrlService";
 
-/* const url: string = "http://localhost:5034/"; */
-
 //Add review
 export const Review = async (review: ReviewInterface) => {
     try {
