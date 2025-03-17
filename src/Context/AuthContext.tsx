@@ -10,8 +10,9 @@ interface AuthProps { children: ReactNode }
 
 export const AuthProvider: React.FC<AuthProps> = ({children}) => {
     const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+  
 
+    //User role
     const decodeRole = (token: string) => {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         return decodedToken.role;
@@ -27,7 +28,7 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
                 },
                 body: JSON.stringify(loginData)
             });
-
+            
             if (!response.ok) {
                 if (response.status === 401) {
                     throw new Error("Felaktigt användarnamn/lösenord");
@@ -77,7 +78,6 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
         const token = localStorage.getItem("token");
 
         if (!token) {
-            setLoading(false);
             return;
         }
 
@@ -100,8 +100,6 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
             localStorage.removeItem("token");
             setUser(null);
             handleError(error)
-        } finally {
-            setLoading(false);
         }
     }
 
@@ -111,12 +109,12 @@ export const AuthProvider: React.FC<AuthProps> = ({children}) => {
 
 
     return (
-        <AuthenticateContext.Provider value={{login, logout, signUp, user, loading}}>
+        <AuthenticateContext.Provider value={{login, logout, signUp, user}}>
             {children}
         </AuthenticateContext.Provider>
     )
 }
-
+// Export useAuth
 export const useAuth = () :AuthContext => {
     const context = useContext(AuthenticateContext);
 

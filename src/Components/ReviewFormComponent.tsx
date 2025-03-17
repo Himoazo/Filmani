@@ -6,6 +6,7 @@ import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { Button } from './ui/button';
 import { Textarea } from '@headlessui/react';
+import { useAuth } from '@/Context/AuthContext';
 
 
 interface ReviewFormProps {
@@ -18,15 +19,17 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
     const [review, setReview] = useState<ReviewInterface>({MovieId: MovieIdIdProp, rating: 0, reviewText: ""});
     const [formErrors, setFormErrors] = useState<ReviewFormErrorInterface>({})
     const [open, setOpen] = useState(false);
-
+    const { user } = useAuth();
+  
     useEffect(() => {
-      setReview(prev => ({ ...prev, MovieId: MovieIdIdProp }));
+      setReview(prev => ({ ...prev, MovieId: MovieIdIdProp })); //At write new review
       
-      if (reviewToEdit) {
+      if (reviewToEdit) { // At edit review
         setReview(prev => ({ ...prev, id: reviewToEdit.id, rating: reviewToEdit.rating, reviewText: reviewToEdit.reviewText }))
       }
     }, [reviewToEdit, MovieIdIdProp])
 
+    //Form validation
     const validateReview = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
@@ -48,8 +51,7 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
       
       if (reviewToEdit && review.id == null) {
         reviewValidation.id = "ID för omdöme som ska redigeras måste anges";
-        }
-      
+        }    
         if (Object.keys(reviewValidation).length > 0) {
           setFormErrors(reviewValidation);
 
@@ -59,24 +61,19 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
         await edit();
       } else {
         await addReview();
-      }
-    
+      }    
     }
 
   const addReview = async () => {
-
       await Review(review);
       setReview({ MovieId: MovieIdIdProp, rating: 0, reviewText: "" });
-
       getReviews();
       setOpen(false);
     }
 
   const edit = async () => {
-
     await editReview(review);
     setReview({ MovieId: MovieIdIdProp, rating: 0, reviewText: "" });
-
     getReviews();
     setOpen(false);
   }
@@ -100,13 +97,15 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
     }}>
     
 <DialogTrigger asChild>
-  {reviewToEdit ? (
+  {reviewToEdit ? ( /* Edit review btn: review owner/admin */
     <Button 
       variant="outline" className="bg-amber-50 hover:bg-amber-100 text-amber-700 border-amber-300 hover:border-amber-400 
       transition-colors duration-200 flex items-center gap-2 cursor-pointer">
-      Redigera
+      {reviewToEdit?.appUserId == user?.id ? "Redigera" : user?.role == "Admin" 
+        ? <>Redigera <small className="text-red-500">(Admin)</small></> 
+        : "Redigera"}
     </Button>
-  ) : (
+  ) : ( /* Write review btn */
     <Button variant="outline" className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-300 
     hover:border-blue-400 transition-colors duration-200 flex items-center gap-2 cursor-pointer" >
               <span className="relative flex size-3">
@@ -140,20 +139,14 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
     <div className="grid gap-6 py-6">
       <div className="space-y-1">
         <div className="grid grid-cols-4 items-center gap-4">
+          {/* Rating */}
           <Label htmlFor="rating" className="text-right font-medium text-gray-700">
             Betyg
           </Label>
           <div className="col-span-3">
-            <Input 
-              type="number" 
-              id="rating" 
-              name="rating" 
-              value={review.rating} 
+            <Input type="number" id="rating" name="rating" value={review.rating} 
               className="border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-md shadow-sm transition-all duration-200"
-              min="1" 
-              max="10"
-              onChange={(event) => setReview(r => ({ ...r, rating: Number(event.target.value) }))}
-            />
+              min="1" max="10" onChange={(event) => setReview(r => ({ ...r, rating: Number(event.target.value) }))}/>
           </div>
         </div>
         {formErrors.rating && (
@@ -169,16 +162,14 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
           </div>
         )}
       </div>
-      
+      {/* Review text */}
       <div className="space-y-1">
         <div className="grid grid-cols-4 items-start gap-4">
           <Label htmlFor="review" className="text-right font-medium text-gray-700 mt-2">
             Recension
           </Label>
           <div className="col-span-3">
-            <Textarea 
-              id="review" 
-              value={review.reviewText} 
+            <Textarea id="review" value={review.reviewText} 
               className="w-full border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-md shadow-sm transition-all duration-200 min-h-[120px]"
               onChange={(event) => setReview(t => ({ ...t, reviewText: event.target.value }))}
             />
@@ -198,23 +189,14 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
         )}
       </div>
     </div>
-    
+    {/* Save */}
     <DialogFooter className="py-4 border-t border-gray-100 gap-3">
-      <Button 
-        type="submit"
-        className="bg-blue-600 hover:bg-blue-700 text-white transition-colors px-6 rounded-full"
-      >
+      <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white transition-colors px-6 rounded-full">
         Spara
       </Button>
-      
+      {/* Delette */}
       {reviewToEdit && (
-        <Button 
-          type="button" 
-          onClick={(e) => { 
-            e.preventDefault(); 
-            deleteReviews(reviewToEdit.id); 
-            setOpen(false);
-          }}
+        <Button type="button" onClick={(e) => {e.preventDefault(); deleteReviews(reviewToEdit.id); setOpen(false);}}
           className="bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 transition-colors px-6 rounded-full"
         >
           Ta bort
@@ -224,7 +206,7 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
   </form>
 </DialogContent>
 </Dialog>
-      );
+      )
 }
 
 export default ReviewFormComponent

@@ -96,8 +96,7 @@ const HeaderComponent = () => {
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-        
-        {/* width 100% mobile */}
+        {/* Search bar mobil */}
         <div className="md:hidden py-3">
           <SearchBar />
         </div>

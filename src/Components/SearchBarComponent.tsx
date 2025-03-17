@@ -11,14 +11,13 @@ const SearchBar = () => {
   const [results, setResults] = useState<Film[]>([]);
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [focus, setFocus] = useState<boolean>(false);
-  
   const navigate = useNavigate();
-  const debouncedSearchValue = useDebounce<string>(query)
+  const debouncedSearchValue = useDebounce<string>(query) //custom hook standard dleay 0.5sec
 
 
   const fetchData = async () => {
     try {
-      const films: Film[] = await searchMedia(query);
+      const films: Film[] = await searchMedia(query); //fetch search query från TMDB api
       if (!films) { throw Error }
       setResults(films);
 
@@ -30,7 +29,7 @@ const SearchBar = () => {
 
   
   useEffect(() => {
-    if (debouncedSearchValue && debouncedSearchValue.length > 2) {
+    if (debouncedSearchValue && debouncedSearchValue.length > 2) { //minimum 2chars to run query
 
       fetchData();
     } else {
@@ -46,7 +45,7 @@ const SearchBar = () => {
     }
   };
   
-
+  // Toggle foucs search bar
   const focusing = () => { setFocus(true); }
   const notFocused = () => { setFocus(false); }
 

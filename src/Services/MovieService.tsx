@@ -43,7 +43,7 @@ export const mediaDetail = async (id: number) => {
     }
 }
 
-//Adds movie to own API if it not exits
+//Adds movie to own API if it not exits else gets view counts
 export const addMovieToLocalAPI = async (id: number, filmSpecs: FilmDetails) => {
     const newFilm: LocalFilmData = {
         movieId: id,

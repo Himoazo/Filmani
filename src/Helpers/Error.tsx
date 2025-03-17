@@ -1,12 +1,9 @@
 import axios from "axios";
 import {  toast } from 'react-toastify';
-
+/**
+ * Hanterar de flesta möjliga fel. 
+ */
 export const handleError = (error: any, customMessage?: string) => {
-  // server fel
- /*  if (!error.response) {
-    toast.error(customMessage || "Kunde inte ansluta till servern. Kontrollera din internetanslutning.");
-    return;
-  } */
 
   if (axios.isAxiosError(error)) {
     const err = error.response;

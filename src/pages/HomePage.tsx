@@ -36,9 +36,9 @@ const HomePage = () => {
 
     return (
       <div className="container mx-auto px-4 py-8">
-        {/* <h1 className="text-3xl font-bold mb-8 text-gray-800">Populära filmer</h1> */}
+        <h1 className="text-3xl font-bold mb-8 text-gray-800">Populära filmer</h1>
         
-        {/* Grid */}
+        {/* Film Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {films.map((film: Film) => (
             <Link 
@@ -52,7 +52,7 @@ const HomePage = () => {
             </Link>
           ))}
         </div>
-        {/* Load more */}
+        {/* Infinite scroll */}
         {hasMore && (
           <div ref={ref} className="text-center py-4">
             <p className="text-gray-500">Laddar fler filmer...</p>

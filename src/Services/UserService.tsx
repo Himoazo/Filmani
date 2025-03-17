@@ -42,7 +42,7 @@ export const deleteUser = async (userId: string) => {
         handleError(error)
     }
 }
-
+//Change role between Admin and User
 export const modifyUserRole = async (userId: string, newRole: string) => {
     try {
         const token = localStorage.getItem("token");

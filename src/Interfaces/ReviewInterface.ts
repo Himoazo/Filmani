@@ -1,10 +1,11 @@
+//Post review
 export interface ReviewInterface {
   id?: number;
   MovieId: number;
   rating: number;
   reviewText: string;
 }
-
+//Errors
 export interface ReviewFormErrorInterface {
     id?: string;
     filmId?: string;
@@ -13,7 +14,7 @@ export interface ReviewFormErrorInterface {
     reviewText?: string;
     Error?: string
 }
-
+//GET review
 export interface ReviewResponseInterface {
   id: number;
   MovieId: number;
@@ -25,7 +26,7 @@ export interface ReviewResponseInterface {
   createdAt: string;
   hasUserLiked: boolean;
 }
-
+//PUT review
 export interface EditReviewInterface {
   rating: number;
   reviewText: string;

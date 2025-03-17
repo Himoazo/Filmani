@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 
 const url: string = "http://localhost:5034/";
 
+//Add review
 export const Review = async (review: ReviewInterface) => {
     try {
         const token = localStorage.getItem("token");
@@ -94,7 +95,7 @@ export const editReview = async (review: ReviewInterface) => {
     }
 }
 
-
+//Like or Unlike a review
 export const toggleLike = async (id: number) => {
     try {
         const token = localStorage.getItem("token");

@@ -1,3 +1,4 @@
+//TMDB api response model works for both movies and series
 export interface Media {
   id: number;
   backdrop_path: string;
@@ -11,14 +12,14 @@ export interface Media {
   vote_average: number;
   vote_count: number;
 }
-
+// Movie object model
 export interface Film extends Media {
   title: string;
   original_title: string;
   release_date: string;
   video: boolean; 
 }
-  
+
 export interface MediaResponse{
   page: number; 
   total_pages: number;
@@ -28,7 +29,7 @@ export interface MediaResponse{
 export interface FilmResponse extends MediaResponse {
   results: Film[]; 
 }
-
+// Movie data object model stored in .net api
 export interface LocalFilmData {
   id?: number;
   movieId: number;
@@ -40,6 +41,7 @@ export interface LocalFilmData {
   overview: string;
 }
 
+// Single movie details data object
   export interface FilmDetails extends Omit<Media, "media_type" | "genre_ids"> {
     belongs_to_collection: null | {
       id: number;
