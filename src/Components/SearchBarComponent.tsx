@@ -78,7 +78,7 @@ const SearchBar = () => {
         {results.length > 0 && query.length >= 2 && focus && (
           <div className="absolute w-full bg-white border border-gray-300 shadow-lg rounded-md mt-1 max-h-60 overflow-y-auto z-50">
             {results.map((film) => (
-              <ComboboxOption
+              <ComboboxOption onClick={()=>{setQuery("")}}
                 key={film.id}
                 value={film}
                 className="p-2 cursor-pointer hover:bg-blue-100 text-gray-900 hover:text-blue-900"
