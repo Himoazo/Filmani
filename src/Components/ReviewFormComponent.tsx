@@ -106,13 +106,13 @@ const ReviewFormComponent = ({MovieIdIdProp, getReviews, reviewToEdit}: ReviewFo
         : "Redigera"}
     </Button>
   ) : ( /* Write review btn */
-    <Button variant="outline" className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-300 
+    <Button variant="outline" disabled={!user} className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-300 
     hover:border-blue-400 transition-colors duration-200 flex items-center gap-2 cursor-pointer" >
               <span className="relative flex size-3">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
               <span className="relative inline-flex size-3 rounded-full bg-sky-500"></span>
               </span>
-                Recensera
+                {user ? "Recensera" : "Logga in för att recensera"}
     </Button>
   )}
 </DialogTrigger>
