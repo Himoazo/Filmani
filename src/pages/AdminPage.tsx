@@ -86,7 +86,7 @@ const AdminPage = () => {
       
       {users.length === 0 && (
         <div className="text-center py-8 text-gray-500">
-          No users found
+          Det finns inga användarkonton
         </div>
       )}
     </div>
